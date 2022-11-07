@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/lichess-team-ratings/static/css/main.fc1c20d1.css",
+    "main.js": "/lichess-team-ratings/static/js/main.cecda44d.js",
+    "index.html": "/lichess-team-ratings/index.html",
+    "main.fc1c20d1.css.map": "/lichess-team-ratings/static/css/main.fc1c20d1.css.map",
+    "main.cecda44d.js.map": "/lichess-team-ratings/static/js/main.cecda44d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fc1c20d1.css",
+    "static/js/main.cecda44d.js"
+  ]
+}
