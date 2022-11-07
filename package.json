@@ -1,6 +1,6 @@
 {
-  "homepage": "http://silvinomar.github.io/lichess-team-ratings",
-  "name": "lichess-teamlb-react-app",
+  "homepage": "https://silvinomar.github.io/lichess-team-ratings",
+  "name": "lichess-team-ratings",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
