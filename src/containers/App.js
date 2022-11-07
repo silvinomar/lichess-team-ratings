@@ -15,7 +15,7 @@ function App(){
         <Router>
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path='lichess-team-ratings/variant/:name/:n' element={<VariantPage/>}/>
+                <Route path='variant/:name/:n' element={<VariantPage/>}/>
                 <Route path="lichess-team-ratings/*" element={<Home />} />
             </Routes>
         </Router>

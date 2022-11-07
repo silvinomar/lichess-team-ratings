@@ -43,7 +43,7 @@ const StatsTable = (props) => {
 
     return (
         <article className={articleClass}>
-            <a href={"lichess-team-ratings/variant/" + statName + "/" + minNumerOfGames} className={"nodecoration " + linkDisabledClass}>
+            <a href={"/variant/" + statName + "/" + minNumerOfGames} className={"nodecoration " + linkDisabledClass}>
                 <h3 className="sticky-top lead bg-dark text-white p-2 mb-0">
                     {statName} <span>{plusButton}</span>
                 </h3>
