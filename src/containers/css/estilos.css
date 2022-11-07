@@ -1,0 +1,103 @@
+ol,
+article {
+    margin: 0;
+    outline: none;
+    border: none;
+}
+
+.nodecoration:link,
+.nodecoration:visited {
+    text-decoration: none;
+    color: unset
+}
+
+.variant-container {
+    outline: none;
+    padding: 10px 15px !important;
+}
+
+.variant-container h3 {
+    border: 2px solid white;
+    text-transform: uppercase;
+    padding-left: 15px !important;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.variant-container li {
+    position: relative;
+    padding: .5rem 1rem;
+    border: 1px solid white;
+    transition: all ease .13s;
+    list-style-position: inside;
+
+}
+
+.variant-container a:nth-child(odd) li {
+    background-color: #A5B9CC;
+}
+
+.variant-container a:nth-child(even) li {
+    background-color: #BAD0E6;
+}
+
+.variant-container a {
+    color: unset;
+}
+
+.variant-container a:hover li {
+    background: white;
+    transform: scale(97%);
+}
+
+.rating {
+    font-weight: 700;
+    color: #343a40;
+    position: absolute;
+    right: 15px;
+}
+
+.leaderboard-container{
+    min-height: 70vh;
+}
+
+.leaderboard-container h2 {
+    font-size: 1.85rem;
+}
+
+.team-name a {
+    text-decoration: underline;
+    text-decoration-color: #212529;
+    color: #212529;
+    transition: all ease .3s;
+}
+
+
+.team-name a:hover {
+    text-decoration: none;
+}
+
+
+.team-name a:hover small {
+    color: #007bff !important;
+}
+
+#minGames{
+    width:75px;
+    font-weight: bold;
+}
+
+@media (min-width: 768px) {
+    .single-lb {
+
+        columns: 2;
+        -webkit-columns: 2;
+        -moz-columns: 2;
+    }
+}
+
+.link-disabled{
+    pointer-events: none;
+    cursor: default;
+}
