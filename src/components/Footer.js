@@ -7,7 +7,7 @@ const Footer = (props) => {
             <section className='team-name py-4 m-0 mt-5 lead'>
                 Last update: <p className="small">{props.date}</p>
             </section>
-            <p className='pb-3'>created by <i>silvinomar</i></p>
+            <p className='pb-3 m-0'>created by <i>silvinomar</i></p>
         </footer>
     )
 }
