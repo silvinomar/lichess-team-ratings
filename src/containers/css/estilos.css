@@ -5,8 +5,8 @@ article {
     border: none;
 }
 
-.nodecoration:link,
-.nodecoration:visited {
+.nodecoration a:link,
+.nodecoration a:visited {
     text-decoration: none;
     color: unset
 }

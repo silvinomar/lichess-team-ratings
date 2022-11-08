@@ -3,10 +3,10 @@ import Tabela from './Tabela.js';
 import Footer from './Footer.js'
 
 import { Variants } from '../utils/Variants.js';
-import { setMinimumOfGames } from './functions.js'
-import { MinimumOfGames } from './functions.js'
-import { setProvisionalDefault } from './functions.js'
-import { ProvisionalDefault } from './functions.js'
+import { setMinimumOfGames } from '../utils/functions.js'
+import { MinimumOfGames } from '../utils/functions.js'
+import { setProvisionalDefault } from '../utils/functions.js'
+import { ProvisionalDefault } from '../utils/functions.js'
 
 
 class Leaderboards extends React.Component {

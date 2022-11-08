@@ -2,9 +2,10 @@ import React from 'react';
 import Tabela from './Tabela.js';
 import Footer from './Footer.js'
 
-import { setMinimumOfGames } from './functions.js'
-import { setProvisionalDefault } from './functions.js'
-import { ProvisionalDefault } from './functions.js'
+import { setMinimumOfGames } from '../utils/functions.js'
+import { setProvisionalDefault } from '../utils/functions.js'
+import { ProvisionalDefault } from '../utils/functions.js'
+import {Link} from 'react-router-dom'
 
 class Leaderboard extends React.Component {
     constructor(props) {
@@ -68,7 +69,7 @@ class Leaderboard extends React.Component {
                     lastUpdate: new Date().toString(),
                     data: ratings
                 });
-         
+
             })
             .catch((err) => {
                 console.error(err);
@@ -80,13 +81,16 @@ class Leaderboard extends React.Component {
         return (
             <section className='leaderboard-container container' >
                 <div className='row'>
-                    <p className='col-12'><a href='/' className='py-2'>Go back &#60;</a></p>
-
+                    <p className='col-12 py-2'>
+                        <Link to="/">
+                            Go back &#60;
+                        </Link>
+                    </p>
                     <h2 className='display-4 col-12 mb-3'>Leaderboards</h2>
                     <p className='col-12 my-1'>A player needs to have at least <input type="number" name="minGames" id="minGames" placeholder={this.state.minGames} min="0" maxLength="5" onChange={this.handleChange}></input> rated games to appear on the leaderboards</p>
-                    <p className='col-12 my-1'>Show provisional ratings <input type="checkbox" defaultChecked={this.state.showProvisionalRatings} onChange={this.handleToggle}/></p>
+                    <p className='col-12 my-1'>Show provisional ratings <input type="checkbox" defaultChecked={this.state.showProvisionalRatings} onChange={this.handleToggle} /></p>
 
-                    <Tabela key={this.state.variantName} name={this.state.variantName} data={this.state.data} minGames={this.state.minGames} single={true}  prov={this.state.showProvisionalRatings}/>
+                    <Tabela key={this.state.variantName} name={this.state.variantName} data={this.state.data} minGames={this.state.minGames} single={true} prov={this.state.showProvisionalRatings} />
 
 
 
