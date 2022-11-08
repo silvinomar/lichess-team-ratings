@@ -20,9 +20,9 @@ const StatsTable = (props) => {
             numberOfRatings = filteredData.length;
             // filters the data by showing only the first 10 players of the list
             if (props.single) {
-                return filteredData.map((player) => <a href={"https://lichess.org/@/" + player[0]} target="_blank" key={player[0]}><li>{player[0]} <span className='rating'>{player[1]}{player[3] ? '?' : ''}</span></li></a>);
+                return filteredData.map((player) => <a href={"https://lichess.org/@/" + player[0]} target="_blank" key={player[0]}><li>{player[0]} <span className='rating'>{player[1]}<span className='provisional'>{player[3] ? '?' : ''}</span></span></li></a>);
             } else {
-                return filteredData.slice(0, 10).map((player) => <a href={"https://lichess.org/@/" + player[0]} target="_blank" key={player[0]}><li>{player[0]} <span className='rating'>{player[1]}{player[3] ? '?' : ''}</span></li></a>);
+                return filteredData.slice(0, 10).map((player) => <a href={"https://lichess.org/@/" + player[0]} target="_blank" key={player[0]}><li>{player[0]} <span className='rating'>{player[1]}<span className='provisional'>{player[3] ? '?' : ''}</span></span></li></a>);
             }
         }
     }

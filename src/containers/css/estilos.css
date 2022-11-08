@@ -11,6 +11,12 @@ article {
     color: unset
 }
 
+.provisional{
+    font-weight: 500;
+    padding: 0 5px;
+    opacity: .8;
+}
+
 .variant-container {
     outline: none;
     padding: 10px 15px !important;
