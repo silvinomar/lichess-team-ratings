@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/lichess-team-ratings/static/css/main.894e9f34.css",
-    "main.js": "/lichess-team-ratings/static/js/main.b465b3e5.js",
+    "main.js": "/lichess-team-ratings/static/js/main.efdff11f.js",
     "index.html": "/lichess-team-ratings/index.html",
     "main.894e9f34.css.map": "/lichess-team-ratings/static/css/main.894e9f34.css.map",
-    "main.b465b3e5.js.map": "/lichess-team-ratings/static/js/main.b465b3e5.js.map"
+    "main.efdff11f.js.map": "/lichess-team-ratings/static/js/main.efdff11f.js.map"
   },
   "entrypoints": [
     "static/css/main.894e9f34.css",
-    "static/js/main.b465b3e5.js"
+    "static/js/main.efdff11f.js"
   ]
 }
