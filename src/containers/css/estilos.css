@@ -40,12 +40,8 @@ article {
 
 }
 
-.variant-container a:nth-child(odd) li {
-    background-color: #A5B9CC;
-}
-
-.variant-container a:nth-child(even) li {
-    background-color: #BAD0E6;
+.variant-container li {
+    background-color: #eee;
 }
 
 .variant-container a {
@@ -80,7 +76,7 @@ article {
 }
 
 .viewFullRanking{
-    background: transparent !important;
+    background: #a5b9cc  !important;
     color: #435 !important;
     font-weight: bold;
     list-style-type: none;
