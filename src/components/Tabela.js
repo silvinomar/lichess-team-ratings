@@ -34,7 +34,7 @@ const StatsTable = (props) => {
                 if (filteredData.length > 10) {
                     data.push(
                         <Link to={statName} >
-                            <li class="viewFullRanking">full ranking ({filteredData.length} players)</li>
+                            <li class="viewFullRanking">full {statName} ranking ({filteredData.length} players)</li>
                         </Link>
                     )
                 }
