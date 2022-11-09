@@ -79,6 +79,24 @@ article {
     transition: all ease .3s;
 }
 
+.viewFullRanking{
+    background: transparent !important;
+    color: #435 !important;
+    font-weight: bold;
+    list-style-type: none;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    font-size: 80%;
+    text-transform: uppercase;
+}
+
+.variant-container a:hover .viewFullRanking {
+    transform: none;
+}
+
+.hide{
+    display: none;
+}
 
 .team-name a:hover {
     text-decoration: none;

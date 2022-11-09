@@ -5,12 +5,13 @@ import Footer from './Footer.js'
 import { setMinimumOfGames } from '../utils/functions.js'
 import { setProvisionalDefault } from '../utils/functions.js'
 import { ProvisionalDefault } from '../utils/functions.js'
+import { Team } from '../utils/functions.js'
 import {Link} from 'react-router-dom'
 
 class Leaderboard extends React.Component {
     constructor(props) {
         super(props);
-        this.team = 'grupo-xadrez-musas';
+        this.team = Team();
         this.state = {
             minGames: props.minOfGames,
             lastUpdate: "",

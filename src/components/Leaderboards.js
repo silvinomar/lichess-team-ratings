@@ -3,6 +3,7 @@ import Tabela from './Tabela.js';
 import Footer from './Footer.js'
 
 import { Variants } from '../utils/Variants.js';
+import { Team } from '../utils/functions.js'
 import { setMinimumOfGames } from '../utils/functions.js'
 import { MinimumOfGames } from '../utils/functions.js'
 import { setProvisionalDefault } from '../utils/functions.js'
@@ -12,7 +13,7 @@ import { ProvisionalDefault } from '../utils/functions.js'
 class Leaderboards extends React.Component {
     constructor(props) {
         super(props);
-        this.team = 'grupo-xadrez-musas';
+        this.team = Team();
         this.state = {
             minGames: MinimumOfGames(),
             lastUpdate: "",
@@ -213,7 +214,6 @@ class Leaderboards extends React.Component {
             <section className='leaderboard-container container' >
                 <div className='row'>
                     <h2 className='display-4 col-12 mb-3'>Leaderboards</h2>
-                    <p className='col-12 my-1'>Click on the variant name (e.g. Bullet) to view the complete ranking</p>
                     <p className='col-12 my-1'>A player needs to have at least <input type="number" name="minGames" id="minGames" placeholder={this.state.minGames} min="0" maxLength="5" onChange={this.handleChange}></input> rated games to appear on the leaderboards</p>
                     <p className='col-12 my-1'>Show provisional ratings <input type="checkbox" defaultChecked={this.state.showProvisionalRatings} onChange={this.handleToggle}/></p>
 
