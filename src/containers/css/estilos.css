@@ -23,7 +23,7 @@ article {
 }
 
 .variant-container h3 {
-    border: 2px solid white;
+    border: 1px solid white;
     text-transform: uppercase;
     padding-left: 15px !important;
     display: flex;
@@ -65,7 +65,9 @@ article {
 }
 
 .leaderboard-container h2 {
-    font-size: 1.85rem;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+
 }
 
 .team-name a {
@@ -108,6 +110,21 @@ article {
     font-weight: bold;
 }
 
+.filters{
+    z-index: 99;
+    padding: 50px;
+    background: #B0C4D9 !important;
+    margin-bottom: 10px;
+}
+
+.filters div{
+    color:#435;
+}
+
+h3.sticky-top{
+    top:18vh;
+    z-index:1
+}
 @media (min-width: 768px) {
     .single-lb {
 
