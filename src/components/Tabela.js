@@ -21,7 +21,7 @@ const StatsTable = (props) => {
             numberOfRatings = filteredData.length;
             // filters the data by showing only the first 10 players of the list
             if (props.single) {
-                articleClass = "col-12 text-dark variant-container px-0"
+                articleClass = "col-12 text-dark variant-container px-0 mt-3"
                 return filteredData.map((player) => <a href={"https://lichess.org/@/" + player[0]} target="_blank" key={player[0]}><li>{player[0]} <span className='rating'>{player[1]}<span className='provisional'>{player[3] ? '?' : ''}</span></span></li></a>);
             } else {
                 let data = filteredData.slice(0, 10).map((player) => <a href={"https://lichess.org/@/" + player[0]} target="_blank" key={player[0]}><li>{player[0]} <span className='rating'>{player[1]}<span className='provisional'>{player[3] ? '?' : ''}</span></span></li></a>);
@@ -30,11 +30,11 @@ const StatsTable = (props) => {
                     visibility = "hide";
                 }
                 
-                articleClass = "col-sm-6 cold-md-3 col-lg-4 text-dark variant-container px-0 " + visibility
+                articleClass = "col-sm-6 col-md-4 col-xl-3 text-dark variant-container px-0 mt-3" + visibility
                 if (filteredData.length > 10) {
                     data.push(
-                        <Link to={statName} >
-                            <li class="viewFullRanking">full {statName} ranking ({filteredData.length} players)</li>
+                        <Link to={statName} key={statName}>
+                            <li className="viewFullRanking">full {statName} ranking <p className='m-0'>({filteredData.length} players)</p></li>
                         </Link>
                     )
                 }
@@ -42,22 +42,12 @@ const StatsTable = (props) => {
             return data;
             }    
         }
-    }
-
-    /*let linkDisabledClass = "";
-    let plusButton = "+";
-
-    if (numberOfRatings <= 10 || props.single) {
-        linkDisabledClass = "link-disabled";
-        plusButton = ""
-    }*/
-
-   
+    }   
 
     return (
         <article className={articleClass}>
             <a>
-                <h3 className="sticky-top lead bg-dark text-white p-2 mb-0">
+                <h3 className="lead bg-dark text-white p-2 mb-0">
                     {statName} <span>{hideshowBtn}</span>
                 </h3>
 

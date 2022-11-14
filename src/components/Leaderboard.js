@@ -6,7 +6,7 @@ import { setMinimumOfGames } from '../utils/functions.js'
 import { setProvisionalDefault } from '../utils/functions.js'
 import { ProvisionalDefault } from '../utils/functions.js'
 import { Team } from '../utils/functions.js'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 class Leaderboard extends React.Component {
     constructor(props) {
@@ -87,10 +87,11 @@ class Leaderboard extends React.Component {
                             Go back &#60;
                         </Link>
                     </p>
-                    <h2 className='display-4 col-12 mb-3'>Leaderboards</h2>
-                    <p className='col-12 my-1'>A player needs to have at least <input type="number" name="minGames" id="minGames" placeholder={this.state.minGames} min="0" maxLength="5" onChange={this.handleChange}></input> rated games to appear on the leaderboards</p>
-                    <p className='col-12 my-1'>Show provisional ratings <input type="checkbox" defaultChecked={this.state.showProvisionalRatings} onChange={this.handleToggle} /></p>
-
+                    {/*<h2 className='display-4 col-12 mb-3'>Leaderboards</h2>*/}
+                    <section className='col-12 filters sticky-top bg-white py-3'>
+                        <p className='col-12 my-1'>A player needs to have at least <input type="number" name="minGames" id="minGames" placeholder={this.state.minGames} min="0" maxLength="5" onChange={this.handleChange}></input> rated games to appear on the leaderboards</p>
+                        <p className='col-12 my-1'>Show provisional ratings <input type="checkbox" defaultChecked={this.state.showProvisionalRatings} onChange={this.handleToggle} /></p>
+                    </section>
                     <Tabela key={this.state.variantName} name={this.state.variantName} data={this.state.data} minGames={this.state.minGames} single={true} prov={this.state.showProvisionalRatings} />
 
 
@@ -115,7 +116,3 @@ function isJsonString(str) {
 }
 
 export default Leaderboard
-
-
-
-
