@@ -30,7 +30,7 @@ const StatsTable = (props) => {
                     visibility = "hide";
                 }
                 
-                articleClass = "col-sm-6 col-md-4 col-xl-3 text-dark variant-container px-0 mt-3" + visibility
+                articleClass = "col-sm-6 col-md-4 col-xl-3 text-dark variant-container px-0 " + visibility
                 if (filteredData.length > 10) {
                     data.push(
                         <Link to={statName} key={statName}>
