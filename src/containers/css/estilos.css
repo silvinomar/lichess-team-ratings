@@ -142,3 +142,8 @@ h3.sticky-top{
     cursor:pointer;
 }
 
+.specialHeader h3{
+    background: linear-gradient(#FDC53B, #B08517);
+    color: white !important;
+    font-weight: 400;
+}
