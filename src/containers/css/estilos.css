@@ -134,6 +134,11 @@ h3.sticky-top{
     }
 }
 
-label:hover{
+.provisionalInput input{
+    vertical-align: middle;
+}
+
+.provisionalInput *:hover{
     cursor:pointer;
 }
+
