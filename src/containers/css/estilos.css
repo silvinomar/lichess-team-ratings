@@ -133,3 +133,7 @@ h3.sticky-top{
         -moz-columns: 2;
     }
 }
+
+label:hover{
+    cursor:pointer;
+}
