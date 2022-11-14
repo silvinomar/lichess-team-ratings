@@ -22,7 +22,7 @@ function App() {
 
                 {Variants().map(vname =>
                     <Route path={'/' + vname}
-                        element={<VariantPage variantName={vname} />} />
+                        element={<VariantPage variantName={vname} />} key={vname}/>
                 )}
 
             </Routes>

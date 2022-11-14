@@ -3,6 +3,7 @@ import Tabela from './Tabela.js';
 import Footer from './Footer.js'
 
 import { Team } from '../utils/functions.js'
+import { setFetchedData } from '../utils/functions.js'
 import { setMinimumOfGames } from '../utils/functions.js'
 import { MinimumOfGames } from '../utils/functions.js'
 import { setProvisionalDefault } from '../utils/functions.js'
@@ -18,10 +19,13 @@ class Leaderboards extends React.Component {
             lastUpdate: "",
             showProvisionalRatings: ProvisionalDefault(),
             variants: [],
-            ratings: {}
+            ratings: {},
+            variantName: ""
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleToggle = this.handleToggle.bind(this);
+        this.handleFetch = this.handleFetch.bind(this);
+
 
     }
     componentDidMount() {
@@ -116,11 +120,18 @@ class Leaderboards extends React.Component {
                 //Ordenar cada variante por rating (descendente)
                 for (let i in ratings) ratings[i] = ratings[i].sort((a, b) => b[1] - a[1]);
 
-                this.setState({
+
+                const fetched = {
+                    minGames: MinimumOfGames(),
                     lastUpdate: new Date().toString(),
+                    showProvisionalRatings: ProvisionalDefault(),
+                    variantName: "",
                     variants: variants,
                     ratings: ratings
-                });
+                }
+
+                this.setState(fetched);
+                setFetchedData(fetched);
             })
             .catch((err) => {
                 console.error(err);
@@ -132,10 +143,16 @@ class Leaderboards extends React.Component {
         return (
             <section className='leaderboard-container container' >
                 <div className='row'>
-                    <h2 className='display-4 col-12 mb-3'>Leaderboards</h2>
-                    <p className='col-12 my-1'>A player needs to have at least <input type="number" name="minGames" id="minGames" placeholder={this.state.minGames} min="0" maxLength="5" onChange={this.handleChange}></input> rated games to appear on the leaderboards</p>
-                    <p className='col-12 my-1'>Show provisional ratings <input type="checkbox" defaultChecked={this.state.showProvisionalRatings} onChange={this.handleToggle}/></p>
-
+                    {/*<h2 className='display-4 col-12 mb-3'>Leaderboards</h2>*/}
+                    <section className='col-12 filters sticky-top bg-white py-3'>
+                        <div className='lead small'>
+                            <h5>Filters</h5>
+                            <p className='my-1'>A player needs to have at least <input type="number" name="minGames" id="minGames" placeholder={this.state.minGames} min="0" maxLength="5" onChange={this.handleChange}></input> rated games to appear on the leaderboards</p>
+                            <p className='my-1 provisionalInput'>
+                                <label for="prov">Show provisional ratings</label> <input type="checkbox" id="prov" defaultChecked={this.state.showProvisionalRatings} onChange={this.handleToggle} />
+                            </p>
+                        </div>
+                    </section>
 
                     {this.state.variants.map(vname => (
                         <Tabela key={vname} name={vname} data={this.state.ratings[vname]} minGames={this.state.minGames} single={false} prov={this.state.showProvisionalRatings}/>
