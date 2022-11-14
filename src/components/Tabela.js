@@ -9,8 +9,6 @@ const StatsTable = (props) => {
     let articleClass;
     const tableData = filterData(props.data, minNumerOfGames);
 
-    let hideshowBtn = "";
-
     function filterData(data, n) {
         if (data != null) {
             // filters the data by including only players with a minimum of games
@@ -26,11 +24,14 @@ const StatsTable = (props) => {
             } else {
                 let data = filteredData.slice(0, 10).map((player) => <a href={"https://lichess.org/@/" + player[0]} target="_blank" key={player[0]}><li>{player[0]} <span className='rating'>{player[1]}<span className='provisional'>{player[3] ? '?' : ''}</span></span></li></a>);
                 let visibility = "";
-                if(filteredData.length<1){
+                let special = "";
+
+                if (filteredData.length < 1)
                     visibility = "hide";
-                }
-                
-                articleClass = "col-sm-6 col-md-4 col-xl-3 text-dark variant-container px-0 " + visibility
+                if (statName == "Super Champions" || statName == "Standard Champions" || statName == "Weird Champions")
+                    special = "specialHeader"
+
+                articleClass = "col-sm-6 col-md-4 col-xl-3 text-dark variant-container px-0 " + visibility + " " + special
                 if (filteredData.length > 10) {
                     data.push(
                         <Link to={statName} key={statName}>
@@ -39,16 +40,16 @@ const StatsTable = (props) => {
                     )
                 }
 
-            return data;
-            }    
+                return data;
+            }
         }
-    }   
+    }
 
     return (
         <article className={articleClass}>
             <a>
                 <h3 className="lead bg-dark text-white p-2 mb-0">
-                    {statName} <span>{hideshowBtn}</span>
+                    {statName}
                 </h3>
 
             </a>

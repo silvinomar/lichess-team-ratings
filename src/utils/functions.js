@@ -43,6 +43,4 @@ export function getFetchedData(){
 
 export function setFetchedData(d){
     fetchedData = d;
-    console.log("dados: \n" + fetchedData.bulletRatings);
-    console.log("guardei dados: \n" + fetchedData.minGames)
 }
