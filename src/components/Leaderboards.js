@@ -2,7 +2,6 @@ import React from 'react';
 import Tabela from './Tabela.js';
 import Footer from './Footer.js'
 
-import { Variants } from '../utils/Variants.js';
 import { Team } from '../utils/functions.js'
 import { setFetchedData } from '../utils/functions.js'
 import { setMinimumOfGames } from '../utils/functions.js'
@@ -19,21 +18,9 @@ class Leaderboards extends React.Component {
             minGames: MinimumOfGames(),
             lastUpdate: "",
             showProvisionalRatings: ProvisionalDefault(),
-            variantName: "",
-            bulletRatings: [],
-            blitzRatings: [],
-            rapidRatings: [],
-            classicalRatings: [],
-            correspondenceRatings: [],
-            puzzleRatings: [],
-            chess960Ratings: [],
-            hordeRatings: [],
-            antichessRatings: [],
-            atomicRatings: [],
-            racingKingsRatings: [],
-            kingOfTheHillRatings: [],
-            crazyhouseRatings: [],
-            threeCheckRatings: []
+            variants: [],
+            ratings: {},
+            variantName: ""
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleToggle = this.handleToggle.bind(this);
@@ -63,130 +50,75 @@ class Leaderboards extends React.Component {
             .then((response) => response.text())
             .then(data => data.split('\n'))
             .then((array) => {
+                array='{"players":['+array.slice(0,-1)+']}'
+                if(!array.length){
+                    console.error('error getting team data');
+                    return;
+                }
+                try {
+                    array=JSON.parse(array);
+                } catch (e) {
+                    console.log(e)
+                    return;
+                }
 
-                let bullet = [];
-                let blitz = [];
-                let rapid = [];
-                let classical = [];
-                let correspondence = [];
-                let puzzle = [];
-                let chess960 = [];
-                let horde = [];
-                let antichess = [];
-                let atomic = [];
-                let racingKings = [];
-                let kingOfTheHill = [];
-                let crazyhouse = [];
-                let threeCheck = [];
-                if (array.length > 0) {
-
-                    //Preencher variantes com os dados de cada jogador 
-                    for (let i = 0; i < array.length; i++) {
-                        if (isJsonString(array[i])) {
-                            let player = JSON.parse(array[i]);
-
-                            if (player.perfs.bullet != null) {
-                                bullet.push([player.username, player.perfs.bullet.rating, player.perfs.bullet.games, player.perfs.bullet.prov]);
-                            } else {
-                                bullet.push([player.username, 0, 0, true]);
-                            }
-
-                            if (player.perfs.blitz != null) {
-                                blitz.push([player.username, player.perfs.blitz.rating, player.perfs.blitz.games, player.perfs.blitz.prov]);
-                            } else {
-                                blitz.push([player.username, 0, 0, true]);
-                            }
-
-                            if (player.perfs.rapid != null) {
-                                rapid.push([player.username, player.perfs.rapid.rating, player.perfs.rapid.games, player.perfs.rapid.prov]);
-                            } else {
-                                rapid.push([player.username, 0, 0, true]);
-                            }
-
-                            if (player.perfs.classical != null) {
-                                classical.push([player.username, player.perfs.classical.rating, player.perfs.classical.games, player.perfs.classical.prov]);
-                            } else {
-                                classical.push([player.username, 0, 0, true]);
-                            }
-
-                            if (player.perfs.correspondence != null) {
-                                correspondence.push([player.username, player.perfs.correspondence.rating, player.perfs.correspondence.games, player.perfs.correspondence.prov]);
-                            } else {
-                                correspondence.push([player.username, 0, 0, true]);
-                            }
-
-                            if (player.perfs.puzzle != null) {
-                                puzzle.push([player.username, player.perfs.puzzle.rating, player.perfs.puzzle.games, player.perfs.puzzle.prov]);
-                            } else {
-                                puzzle.push([player.username, 0, 0, true]);
-                            }
-
-                            if (player.perfs.chess960 != null) {
-                                chess960.push([player.username, player.perfs.chess960.rating, player.perfs.chess960.games, player.perfs.chess960.prov]);
-                            } else {
-                                chess960.push([player.username, 0, 0, true]);
-                            }
-
-                            if (player.perfs.horde != null) {
-                                horde.push([player.username, player.perfs.horde.rating, player.perfs.horde.games, player.perfs.horde.prov]);
-                            } else {
-                                horde.push([player.username, 0, 0, true]);
-                            }
-
-                            if (player.perfs.antichess != null) {
-                                antichess.push([player.username, player.perfs.antichess.rating, player.perfs.antichess.games, player.perfs.antichess.prov]);
-                            } else {
-                                antichess.push([player.username, 0, 0, true]);
-                            }
-
-                            if (player.perfs.atomic != null) {
-                                atomic.push([player.username, player.perfs.atomic.rating, player.perfs.atomic.games, player.perfs.atomic.prov]);
-                            } else {
-                                atomic.push([player.username, 0, 0, true]);
-                            }
-
-                            if (player.perfs.racingKings != null) {
-                                racingKings.push([player.username, player.perfs.racingKings.rating, player.perfs.racingKings.games, player.perfs.racingKings.prov]);
-                            } else {
-                                racingKings.push([player.username, 0, 0, true]);
-                            }
-
-                            if (player.perfs.kingOfTheHill != null) {
-                                kingOfTheHill.push([player.username, player.perfs.kingOfTheHill.rating, player.perfs.kingOfTheHill.games, player.perfs.kingOfTheHill.prov]);
-                            } else {
-                                kingOfTheHill.push([player.username, 0, 0, true]);
-                            }
-
-                            if (player.perfs.crazyhouse != null) {
-                                crazyhouse.push([player.username, player.perfs.crazyhouse.rating, player.perfs.crazyhouse.games, player.perfs.crazyhouse.prov]);
-                            } else {
-                                crazyhouse.push([player.username, 0, 0, true]);
-                            }
-
-                            if (player.perfs.threeCheck != null) {
-                                threeCheck.push([player.username, player.perfs.threeCheck.rating, player.perfs.threeCheck.games, player.perfs.threeCheck.prov]);
-                            } else {
-                                threeCheck.push([player.username, 0, 0, true]);
-                            }
+                let ratings={};
+                ratings['Super Champions']=[];
+                ratings['Standard Champions']=[];
+                ratings['Weird Champions']=[];
+                let std_modes_cntr=0;
+                let variants = [];
+                for (let player in array.players){
+                    for(let i in array.players[player].perfs){
+                        if (!variants.includes(i)){
+                          console.log('found variant:',i);
+                          variants.push(i)
+                          if (i==='ultraBullet' || i==='bullet' || i==='blitz' ||
+                              i==='rapid' || i==='classical' ||
+                              i==='correspondence' || i==='puzzle'){
+                                std_modes_cntr+=1
+                          }
+                          console.log('std_modes_cntr:',std_modes_cntr);
                         }
                     }
                 }
-
+                variants.push('Super Champions')
+                variants.push('Standard Champions')
+                variants.push('Weird Champions')
+                let all_modes_cntr=variants.length;
+                let weird_modes_cntr=all_modes_cntr-std_modes_cntr;
+                for (let player in array.players){
+                    let standard_avg=0;
+                    let weird_avg=0;
+                    let all_avg=0;
+                    let standard_games_cnt=0;
+                    let weird_games_cnt=0;
+                    let all_games_cnt=0;
+                    for (let i in array.players[player].perfs){
+                        if (!('games' in array.players[player]['perfs'][i]))
+                            continue
+                        if (i==='ultraBullet' || i==='bullet' || i==='blitz' || i==='rapid' || i==='classical' || i==='correspondence' || i==='puzzle'){
+                            standard_games_cnt+=array.players[player]['perfs'][i]['games'];
+                            standard_avg+=array.players[player]['perfs'][i]['rating'];
+                        }
+                        else{
+                            weird_games_cnt+=array.players[player]['perfs'][i]['games'];
+                            weird_avg+=array.players[player]['perfs'][i]['rating'];
+                        }
+                        all_games_cnt+=array.players[player]['perfs'][i]['games'];
+                        all_avg+=array.players[player]['perfs'][i]['rating'];
+                        if (! (i in ratings)) ratings[i]=[];
+                        ratings[i].push([array.players[player].username, array.players[player]['perfs'][i]['rating'], array.players[player]['perfs'][i]['games']]);
+                    }
+                    weird_avg/=weird_modes_cntr;
+                    standard_avg/=std_modes_cntr;
+                    all_avg/=all_modes_cntr;
+                    ratings['Super Champions'].push([array.players[player].username, Math.round(all_avg), all_games_cnt]);
+                    ratings['Standard Champions'].push([array.players[player].username, Math.round(standard_avg), standard_games_cnt]);
+                    ratings['Weird Champions'].push([array.players[player].username, Math.round(weird_avg), weird_games_cnt]);
+                }
                 //Ordenar cada variante por rating (descendente)
-                bullet = bullet.sort((a, b) => b[1] - a[1]);
-                blitz = blitz.sort((a, b) => b[1] - a[1]);
-                rapid = rapid.sort((a, b) => b[1] - a[1]);
-                classical = classical.sort((a, b) => b[1] - a[1]);
-                correspondence = correspondence.sort((a, b) => b[1] - a[1]);
-                puzzle = puzzle.sort((a, b) => b[1] - a[1]);
-                chess960 = chess960.sort((a, b) => b[1] - a[1]);
-                horde = horde.sort((a, b) => b[1] - a[1]);
-                antichess = antichess.sort((a, b) => b[1] - a[1]);
-                atomic = atomic.sort((a, b) => b[1] - a[1]);
-                racingKings = racingKings.sort((a, b) => b[1] - a[1]);
-                kingOfTheHill = kingOfTheHill.sort((a, b) => b[1] - a[1]);
-                crazyhouse = crazyhouse.sort((a, b) => b[1] - a[1]);
-                threeCheck = threeCheck.sort((a, b) => b[1] - a[1]);
+                for (let i in ratings) ratings[i] = ratings[i].sort((a, b) => b[1] - a[1]);
 
 
                 const fetched = {
@@ -194,24 +126,12 @@ class Leaderboards extends React.Component {
                     lastUpdate: new Date().toString(),
                     showProvisionalRatings: ProvisionalDefault(),
                     variantName: "",
-                    bulletRatings: bullet,
-                    blitzRatings: blitz,
-                    rapidRatings: rapid,
-                    classicalRatings: classical,
-                    correspondenceRatings: correspondence,
-                    puzzleRatings: puzzle,
-                    chess960Ratings: chess960,
-                    hordeRatings: horde,
-                    antichessRatings: antichess,
-                    atomicRatings: atomic,
-                    racingKingsRatings: racingKings,
-                    kingOfTheHillRatings: kingOfTheHill,
-                    crazyhouseRatings: crazyhouse,
-                    threeCheckRatings: threeCheck
-                };
+                    variants: variants,
+                    ratings: ratings
+                }
+
                 this.setState(fetched);
                 setFetchedData(fetched);
-
             })
             .catch((err) => {
                 console.error(err);
@@ -234,8 +154,8 @@ class Leaderboards extends React.Component {
                         </div>
                     </section>
 
-                    {Variants().map(vname => (
-                        <Tabela key={vname} name={vname} data={this.state[vname + "Ratings"]} minGames={this.state.minGames} single={false} prov={this.state.showProvisionalRatings} />
+                    {this.state.variants.map(vname => (
+                        <Tabela key={vname} name={vname} data={this.state.ratings[vname]} minGames={this.state.minGames} single={false} prov={this.state.showProvisionalRatings}/>
                     ))}
 
 
@@ -248,15 +168,6 @@ class Leaderboards extends React.Component {
     } //return
 
 } //class
-
-function isJsonString(str) {
-    try {
-        JSON.parse(str);
-    } catch (e) {
-        return false;
-    }
-    return true;
-}
 
 export default Leaderboards
 
