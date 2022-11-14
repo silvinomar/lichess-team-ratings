@@ -52,7 +52,7 @@ class Leaderboard extends React.Component {
                         <div className='lead small'>
                             <h5>Filters</h5>
                             <p className='my-1'>A player needs to have at least <input type="number" name="minGames" id="minGames" placeholder={this.state.minGames} min="0" maxLength="5" onChange={this.handleChange}></input> rated games to appear on the leaderboards</p>
-                            <p className='my-1'>Show provisional ratings <input type="checkbox" defaultChecked={this.state.showProvisionalRatings} onChange={this.handleToggle} /></p>
+                            <p className='my-1'><label for="prov">Show provisional ratings</label>  <input type="checkbox" id="prov" defaultChecked={this.state.showProvisionalRatings} onChange={this.handleToggle} /></p>
                         </div>
                     </section>
                     <Tabela key={this.state.variantName} name={this.state.variantName} data={this.state[this.state.variantName + "Ratings"]} minGames={this.state.minGames} single={true} prov={this.state.showProvisionalRatings} />

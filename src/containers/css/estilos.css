@@ -133,8 +133,3 @@ h3.sticky-top{
         -moz-columns: 2;
     }
 }
-
-.link-disabled{
-    pointer-events: none;
-    cursor: default;
-}
