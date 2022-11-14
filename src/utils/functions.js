@@ -1,6 +1,7 @@
 let minimumOfGames = 10;
 let provisionalDefault = true;
-let teamID = "grupo-xadrez-musas"
+let teamID = "grupo-xadrez-musas";
+let fetchedData;
 
 export function FilterByNumberOfGames(players, n) {
     return players.filter((player) => (player[2] >= n));;
@@ -28,7 +29,6 @@ export function setProvisionalDefault(v){
 }
 
 
-
 export function Team(){
     return teamID;
 }
@@ -37,3 +37,12 @@ export function setTeam(id){
     teamID = id;
 }
 
+export function getFetchedData(){
+    return fetchedData;
+}
+
+export function setFetchedData(d){
+    fetchedData = d;
+    console.log("dados: \n" + fetchedData.bulletRatings);
+    console.log("guardei dados: \n" + fetchedData.minGames)
+}
