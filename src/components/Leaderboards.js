@@ -50,6 +50,7 @@ class Leaderboards extends React.Component {
             .then((response) => response.text())
             .then(data => data.split('\n'))
             .then((array) => {
+                console.log("data: " +array);
                 array = '{"players":[' + array.slice(0, -1) + ']}'
                 if (!array.length) {
                     console.error('error getting team data');
