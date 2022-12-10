@@ -86,7 +86,7 @@ class Leaderboards extends React.Component {
                     }
                 }
 
-                let all_modes_cntr = variants.length;
+                let all_modes_cntr = variants.length-3;
                 let weird_modes_cntr = all_modes_cntr - std_modes_cntr;
                 for (let player in array.players) {
                     let standard_avg = 0;
