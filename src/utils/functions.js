@@ -44,3 +44,10 @@ export function getFetchedData(){
 export function setFetchedData(d){
     fetchedData = d;
 }
+
+export function swapArrayPositions(myArray,a,b){
+    const temp = myArray[a];
+    myArray[a] = myArray[b];
+    myArray[b] = temp;
+    return myArray;
+}
