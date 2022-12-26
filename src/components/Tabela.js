@@ -7,8 +7,9 @@ const StatsTable = (props) => {
     const minNumerOfGames = props.minGames;
     let numberOfRatings;
     let articleClass;
+    let titleDescription = "";
     const tableData = filterData(props.data, minNumerOfGames);
-
+    
     function filterData(data, n) {
         if (data != null) {
             // filters the data by including only players with a minimum of games
@@ -30,6 +31,12 @@ const StatsTable = (props) => {
                     visibility = "hide";
                 if (statName == "Super Champions" || statName == "Standard Champions" || statName == "Weird Champions")
                     special = "specialHeader"
+                if (statName == "Super Champions")
+                    titleDescription = "Average rating across all variants (puzzle, bullet, blitz, rapid, classical, correspondence, chess960, atomic, racingKings, kingOfTheHill, crazyhouse, threeCheck, horde, antichess, ultraBullet)"
+                if (statName == "Standard Champions")
+                    titleDescription = "Average rating across standard variants (puzzle, bullet, blitz, rapid, classical, correspondence, ultraBullet)"
+                if (statName == "Weird Champions")
+                    titleDescription = "Average rating across non-standard variants (chess960, atomic, racingKings, kingOfTheHill, crazyhouse, threeCheck, horde, antichess)"
 
                 articleClass = "col-sm-6 col-md-4 col-xl-3 text-dark variant-container px-0 " + visibility + " " + special
                 if (filteredData.length > 10) {
@@ -47,7 +54,7 @@ const StatsTable = (props) => {
 
     return (
         <article className={articleClass}>
-            <a>
+            <a title={titleDescription}>
                 <h3 className="lead bg-dark text-white p-2 mb-0">
                     {statName}
                 </h3>
