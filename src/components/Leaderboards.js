@@ -8,6 +8,7 @@ import { setMinimumOfGames } from '../utils/functions.js'
 import { MinimumOfGames } from '../utils/functions.js'
 import { setProvisionalDefault } from '../utils/functions.js'
 import { ProvisionalDefault } from '../utils/functions.js'
+import { swapArrayPositions } from '../utils/functions.js';
 
 
 class Leaderboards extends React.Component {
@@ -50,7 +51,7 @@ class Leaderboards extends React.Component {
             .then((response) => response.text())
             .then(data => data.split('\n'))
             .then((array) => {
-                console.log("data: " +array);
+                //console.log("data: " +array);
                 array = '{"players":[' + array.slice(0, -1) + ']}'
                 if (!array.length) {
                     console.error('error getting team data');
@@ -77,6 +78,7 @@ class Leaderboards extends React.Component {
                     for (let i in array.players[player].perfs) {
                         if (!variants.includes(i) && i !== "streak" && i !== "storm" && i !== "racer") {
                             variants.push(i)
+
                             if (i === 'ultraBullet' || i === 'bullet' || i === 'blitz' ||
                                 i === 'rapid' || i === 'classical' ||
                                 i === 'correspondence' || i === 'puzzle') {
@@ -85,6 +87,11 @@ class Leaderboards extends React.Component {
                         }
                     }
                 }
+
+                variants = swapArrayPositions(variants, 3,4);
+                variants = swapArrayPositions(variants, 4,5);
+                variants = swapArrayPositions(variants, 6,8);
+                //console.log(variants);
 
                 let all_modes_cntr = variants.length-3;
                 let weird_modes_cntr = all_modes_cntr - std_modes_cntr;
