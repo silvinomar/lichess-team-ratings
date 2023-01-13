@@ -1,6 +1,6 @@
 :root{
     --dark-blue:#042b54ff;
-    --light-blue:#b6d8fbff;
+    --light-blue:#6fb2f7ff;
     --gray: #e9e9e9ff;
     --yellow: #ffe04fff;
 
@@ -22,7 +22,7 @@ article {
 .provisional{
     font-weight: 500;
     padding: 0 5px;
-    opacity: .8;
+    color:var(--light-blue);
 }
 
 .bg-dark{
@@ -58,12 +58,12 @@ article {
 
 .variant-container a:hover li {
     background: white;
-    transform: scale(97%);
+    transform: scale(99%);
 }
 
 .rating {
     font-weight: 700;
-    color: #343a40;
+    color: var(--dark-blue);
     position: absolute;
     right: 4px;
 }
@@ -87,13 +87,22 @@ article {
 
 .viewFullRanking{
     background: var(--gray)  !important;
-    color: #435 !important;
+    color: var(--dark-blue) !important;
     font-weight: bold;
     list-style-type: none;
     padding-top: 12px;
     padding-bottom: 12px;
+    margin-top:.25rem;
     font-size: 80%;
     text-transform: uppercase;
+    opacity: .9;
+    transition:none;
+
+}
+
+.viewFullRanking:hover{
+    opacity: 1;
+    transition:none;
 }
 
 .variant-container a:hover .viewFullRanking {
@@ -110,12 +119,13 @@ article {
 
 
 .team-name a:hover small {
-    color: #007bff !important;
+    color: var(--dark-blue) !important;
 }
 
 #minGames{
     width:75px;
     font-weight: bold;
+    color: var(--light-blue);
 }
 
 .filters{
@@ -151,7 +161,13 @@ h3.sticky-top{
 }
 
 .specialHeader h3{
-    background: linear-gradient(#FDC53B, #B08517);
+    background: var(--light-blue) !important;
     color: white !important;
     font-weight: 400;
+}
+
+.statDescription{
+    font-size: 80%;
+    font-weight: 100;
+    font-style: italic;
 }
