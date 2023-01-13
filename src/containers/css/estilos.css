@@ -45,7 +45,7 @@ article {
 
 .variant-container li {
     position: relative;
-    padding: .5rem 1rem;
+    padding: .3rem .75rem;
     transition: all ease .13s;
     list-style-position: inside;
 
