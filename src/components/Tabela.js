@@ -42,7 +42,7 @@ const StatsTable = (props) => {
                 if (filteredData.length > 10) {
                     data.push(
                         <Link to={statName} key={statName}>
-                            <li className="viewFullRanking">full {statName} ranking <p className='m-0'>({filteredData.length} players)</p></li>
+                            <li className="viewFullRanking">full ranking <span className='m-0'>({filteredData.length} players)</span></li>
                         </Link>
                     )
                 }
@@ -54,11 +54,13 @@ const StatsTable = (props) => {
 
     return (
         <article className={articleClass}>
-            <a title={titleDescription}>
+            <a>
                 <h3 className="lead bg-dark text-white p-2 mb-0">
                     {statName}
                 </h3>
-
+                <p className='statDescription'>
+               {titleDescription}
+                </p>
             </a>
             <ol className="px-0 mb-0">
                 {tableData}
