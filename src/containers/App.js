@@ -7,7 +7,6 @@ import {
 
 import './css/bootstrap.min.css';
 import './css/estilos.css';
-
 import Home from '../Pages/Home.js'
 import VariantPage from '../Pages/VariantPage.js'
 import { Variants } from '../utils/Variants.js'

@@ -1,6 +1,6 @@
-:root{
-    --dark-blue:#042b54ff;
-    --light-blue:#6fb2f7ff;
+:root {
+    --dark-blue: #042b54ff;
+    --light-blue: #6fb2f7ff;
     --gray: #e9e9e9ff;
     --yellow: #ffe04fff;
 
@@ -19,14 +19,54 @@ article {
     color: unset
 }
 
-.provisional{
+header h1{
+    font-size: 1.5rem;
+    text-transform: uppercase;
     font-weight: 500;
-    padding: 0 5px;
-    color:var(--light-blue);
+    color: var(--dark-blue);
+    margin-bottom: 0;
 }
 
-.bg-dark{
-    background-color:var(--dark-blue) !important;
+header{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.generalOverview{
+    border: 1px solid var(--dark-blue);
+    padding: 10px;
+    margin-left: auto;
+}
+
+.generalOverview h2{
+    font-size:80%;
+    text-transform: uppercase;
+}
+
+.generalOverview span{
+    text-transform: none;
+}
+
+.generalOverview span, .generalOverview a{
+    margin-left:4px;
+}
+
+.generalOverview button{
+    outline: none;
+    border: none;
+    margin-top: 0.2rem;
+    text-decoration: underline;
+}
+
+.provisional {
+    font-weight: 500;
+    padding: 0 5px;
+    color: var(--light-blue);
+}
+
+.bg-dark {
+    background-color: var(--dark-blue) !important;
 }
 
 .variant-container {
@@ -66,16 +106,12 @@ article {
     color: var(--dark-blue);
     position: absolute;
     right: 4px;
+    padding-left: 10px;
+    background: white;
 }
 
-.leaderboard-container{
+.leaderboard-container {
     min-height: 70vh;
-}
-
-.leaderboard-container h2 {
-    font-size: 1.5rem;
-    text-transform: uppercase;
-
 }
 
 .team-name a {
@@ -85,31 +121,31 @@ article {
     transition: all ease .3s;
 }
 
-.viewFullRanking{
-    background: var(--gray)  !important;
+.viewFullRanking {
+    background: var(--gray) !important;
     color: var(--dark-blue) !important;
     font-weight: bold;
     list-style-type: none;
     padding-top: 12px;
     padding-bottom: 12px;
-    margin-top:.25rem;
+    margin-top: .25rem;
     font-size: 80%;
     text-transform: uppercase;
     opacity: .9;
-    transition:none;
+    transition: none;
 
 }
 
-.viewFullRanking:hover{
+.viewFullRanking:hover {
     opacity: 1;
-    transition:none;
+    transition: none;
 }
 
 .variant-container a:hover .viewFullRanking {
     transform: none;
 }
 
-.hide{
+.hide {
     display: none;
 }
 
@@ -122,27 +158,95 @@ article {
     color: var(--dark-blue) !important;
 }
 
-#minGames{
-    width:75px;
-    font-weight: bold;
-    color: var(--light-blue);
-}
-
-.filters{
+.filters {
     z-index: 99;
-    padding: 50px;
     background: var(--gray) !important;
     margin-bottom: 10px;
 }
 
-.filters div{
-    color:#435;
+.filters div {
+    color: #435;
 }
 
-h3.sticky-top{
-    top:18vh;
-    z-index:1
+
+.filters input {
+    color: var(--dark-blue);
+    font-weight: 500;
 }
+
+.filter b {
+    margin-bottom: 0.5rem;
+    display: block;
+    border-bottom: 1px solid var(--dark-blue);
+}
+
+.icon{
+    width: 14px;
+    margin: 4px;
+}
+
+h3.sticky-top {
+    top: 18vh;
+    z-index: 1
+}
+
+#newTeam {
+    font-weight: bold;
+}
+
+#minGames {
+    width: 75px;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-wrap: wrap;
+    min-height: 20vh;
+    font-weight: bold;
+    font-size: calc(5rem + 10vw);
+}
+
+
+.loading-animation span {
+    display: inline-block;
+    width: 20vh;
+    height: 20vh;
+    margin-left: 2rem;
+    border-radius: 100%;
+    border: 2px solid rgba(0, 0, 0, 0);
+    animation: donut-spin linear 1.2s infinite;
+    border: 2px solid transparent;
+    border-right-color: rgba(15, 15, 255, 0.55);
+}
+
+header .loading-animation span{
+    width:20px;
+    height:20px;
+}
+
+header .loading{
+    display: inline;
+}
+
+.loading-animation ~ * {
+    display: none;
+}
+
+
+@keyframes donut-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
 @media (min-width: 768px) {
     .single-lb {
 
@@ -152,22 +256,90 @@ h3.sticky-top{
     }
 }
 
-.provisionalInput input{
+.provisionalInput input {
     vertical-align: middle;
 }
 
-.provisionalInput *:hover{
-    cursor:pointer;
+.provisionalInput *:hover {
+    cursor: pointer;
 }
 
-.specialHeader h3{
+.specialHeader h3 {
     background: var(--light-blue) !important;
     color: white !important;
     font-weight: 400;
 }
 
-.statDescription{
+.statDescription {
     font-size: 80%;
     font-weight: 100;
     font-style: italic;
+}
+
+.stats{
+    padding: .3rem .75rem;
+    font-size: 80%;
+    font-weight: 300;
+    margin-bottom: .5rem;
+}
+
+.generalStat {
+    color: var(--dark-blue);
+    margin-bottom: 0;
+}
+
+.generalStat span {
+    font-weight: 700;
+    padding:2px 4x;
+}
+
+#customize{
+    color:unset;
+    outline: none;
+    font-size: .8rem;
+    margin-bottom: 1rem;
+    height: fit-content;
+}
+
+#customize:hover{
+    color:white;
+    opacity:.7;
+    transition: all ease .3s;
+}
+.closed{
+    height: fit-content;
+}
+
+.closed p{
+    display: none;
+}
+
+.fixed-bottom{
+    margin-bottom: 0;
+}
+
+.closed #customize{
+    margin-bottom: 0;
+}
+
+
+header .loading{
+    min-height: unset;
+    font-size:10px;
+    }
+
+    .hidden{
+        visibility: hidden;
+    }
+
+    footer{
+        margin-bottom: 100px;
+    }
+
+@media print {
+
+    .sticky-top{
+        position: static !important
+    }
+
 }

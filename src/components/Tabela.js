@@ -6,11 +6,14 @@ const StatsTable = (props) => {
     const statName = props.name;
     const minNumerOfGames = props.minGames;
     let numberOfRatings;
+    let averageRating = "N/D";
+    let numberOfGames = "N/D";
     let articleClass;
     let titleDescription = "";
     const tableData = filterData(props.data, minNumerOfGames);
-    
+
     function filterData(data, n) {
+
         if (data != null) {
             // filters the data by including only players with a minimum of games
             let filteredData = FilterByNumberOfGames(data, n);
@@ -18,6 +21,21 @@ const StatsTable = (props) => {
                 filteredData = HideProvisionalRatings(filteredData);
             }
             numberOfRatings = filteredData.length;
+
+            // calculates the average rating    
+            let sum = 0;
+            filteredData.forEach((player) => {
+                sum += player[1];
+            });
+            averageRating = (sum / numberOfRatings).toFixed(0);
+
+            // calculate the total number of games
+            let games = 0;
+            filteredData.forEach((player) => {
+                games += player[2];
+            });
+            numberOfGames = games;
+
             // filters the data by showing only the first 10 players of the list
             if (props.single) {
                 articleClass = "col-12 text-dark variant-container px-0 mt-3"
@@ -29,14 +47,17 @@ const StatsTable = (props) => {
 
                 if (filteredData.length < 1)
                     visibility = "hide";
-                if (statName == "Super Champions" || statName == "Standard Champions" || statName == "Weird Champions")
+                    
+                if (statName == "Super Champions" || statName == "Standard Champions" || statName == "Variant Champions")
                     special = "specialHeader"
+                /*
                 if (statName == "Super Champions")
                     titleDescription = "Average rating across all variants (puzzle, bullet, blitz, rapid, classical, correspondence, chess960, atomic, racingKings, kingOfTheHill, crazyhouse, threeCheck, horde, antichess, ultraBullet)"
                 if (statName == "Standard Champions")
                     titleDescription = "Average rating across standard variants (puzzle, bullet, blitz, rapid, classical, correspondence, ultraBullet)"
                 if (statName == "Weird Champions")
                     titleDescription = "Average rating across non-standard variants (chess960, atomic, racingKings, kingOfTheHill, crazyhouse, threeCheck, horde, antichess)"
+                */
 
                 articleClass = "col-sm-6 col-md-4 col-xl-3 text-dark variant-container px-0 " + visibility + " " + special
                 if (filteredData.length > 10) {
@@ -59,9 +80,19 @@ const StatsTable = (props) => {
                     {statName}
                 </h3>
                 <p className='statDescription'>
-               {titleDescription}
+                    {titleDescription}
                 </p>
             </a>
+
+            <div className='stats'>
+                <p className='generalStat'>
+                    Total games <span className='badge bg-secondary text-white'>{numberOfGames.toLocaleString('en-US')}</span>
+                </p>
+
+                <p className='generalStat'>
+                    Average rating <span className='badge bg-secondary text-white'>{averageRating}</span>
+                </p>
+            </div>
             <ol className="px-0 mb-0">
                 {tableData}
             </ol>

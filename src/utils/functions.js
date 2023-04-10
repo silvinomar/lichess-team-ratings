@@ -3,6 +3,7 @@ let provisionalDefault = true;
 let teamID = "grupo-xadrez-musas";
 let fetchedData;
 
+
 export function FilterByNumberOfGames(players, n) {
     return players.filter((player) => (player[2] >= n));;
 }
