@@ -13,7 +13,6 @@ import { setMinimumOfGames } from '../utils/functions.js'
 import { MinimumOfGames } from '../utils/functions.js'
 import { setProvisionalDefault } from '../utils/functions.js'
 import { ProvisionalDefault } from '../utils/functions.js'
-import { swapArrayPositions } from '../utils/functions.js';
 
 
 class Leaderboards extends React.Component {
@@ -51,20 +50,6 @@ class Leaderboards extends React.Component {
 
     componentDidMount() {
         this.handleFetch(this.state.team);
-        /*window.addEventListener('scroll', () => {
-            if (this.state.loadingState !== "loading") {
-                if (this.state.fixedFilters === "") {
-                    if (window.scrollY > 500) {
-                        this.setState({ "fixedFilters": "fixed-bottom", "collapseFilters": "closed", "hideFilters":"hidden"});
-                    }
-                }
-                else {
-                    if (window.scrollY < 20) {
-                        this.setState({ "fixedFilters": "", "collapseFilters": "", "hideFilters":"" });
-                    }
-                }
-            }
-        })*/
     }
 
     handleChangeTeamName = () => {
@@ -247,7 +232,6 @@ class Leaderboards extends React.Component {
                 }
 
                 this.setState(fetched);
-                setFetchedData(fetched);
             })
             .catch((err) => {
                 console.error(err);
@@ -271,17 +255,6 @@ class Leaderboards extends React.Component {
                 />
 
                 <div className='row'>
-
-                    {/* 
-                  <Filters 
-                        hideStatus={this.state.hideFilters}
-                        collapseStatus={this.state.collapseFilters}
-                        toggleFilters={this.toggleFiltersTab}
-                        changeTeamName={this.handleChangeTeamName}
-                        changeMinGames={this.handleChangeMinGames}
-                        changeProvisional={this.handleToggleProvisional}
-                    />
-                    */}
 
                     <Loading />
 
