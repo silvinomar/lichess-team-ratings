@@ -259,7 +259,7 @@ class Leaderboards extends React.Component {
                     <Loading />
 
                     {this.state.variants.map(vname => (
-                        <Tabela key={vname} name={vname} data={this.state.ratings[vname]} minGames={this.state.minGames} single={false} prov={this.state.showProvisionalRatings} />
+                        <Tabela key={vname} name={vname} data={this.state.ratings[vname]} minGames={this.state.minGames} prov={this.state.showProvisionalRatings} />
                     ))}
 
 
