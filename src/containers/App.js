@@ -7,9 +7,8 @@ import {
 
 import './css/bootstrap.min.css';
 import './css/estilos.css';
-import Home from '../Pages/Home.js'
-import VariantPage from '../Pages/VariantPage.js'
-import { Variants } from '../utils/Variants.js'
+import Leaderboards from '../components/Leaderboards.js'
+
 
 function App() {
 
@@ -17,13 +16,7 @@ function App() {
         //Rotas
         <HashRouter>
             <Routes>
-                <Route path="/" element={<Home />} />
-
-                {Variants().map(vname =>
-                    <Route path={'/' + vname}
-                        element={<VariantPage variantName={vname} />} key={vname}/>
-                )}
-
+                <Route path="/" element={<Leaderboards />} />
             </Routes>
 
         </HashRouter>
