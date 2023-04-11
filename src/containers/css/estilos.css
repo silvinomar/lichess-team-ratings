@@ -124,6 +124,8 @@ header {
 
 .viewFullRanking {
     list-style: none;
+    padding-left:0 !important;
+    padding-right: 0 !important;
 }
 
 .viewFullRanking button {
@@ -346,6 +348,11 @@ footer {
 .modal ol {
     max-height: 66vh;
     overflow: auto;
+    padding-left:0;
+}
+
+.modal li{
+    padding-left:0;
 }
 
 .modal-title{
