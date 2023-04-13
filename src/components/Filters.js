@@ -30,10 +30,12 @@ const Filters = (props) => {
                         <input type="number" name="minGames" id="minGames" placeholder={DefaultMinimumOfGames()} min="0" maxLength="5" onChange={props.changeMinGames}></input>
                         <span> rated games (per player)</span>
                     </p>
-                    <p className='my-1 filter provisionalInput'>
+                    {/*  
+                        <p className='my-1 filter provisionalInput'>
                         <b>Provisional ratings</b>
                         <label htmlFor="prov">Show provisional ratings</label> <input type="checkbox" id="prov" defaultChecked={ProvisionalDefault()} onChange={props.changeProvisional} />
-                    </p>
+                        </p>
+                    */}
                 </div>
             </div>
         </section>
