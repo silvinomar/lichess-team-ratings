@@ -334,7 +334,7 @@ header .loading {
 }
 
 .closed {
-    transform: translateY(127px);
+    transform: translateY(65px);
     transition: all .3s ease-out;
 }
 
