@@ -387,7 +387,8 @@ header {
 }
 
 .overviewStats>div {
-    border: 1px solid black;
+    border: 1px solid rgba(51,51,51,.25);
+    border-radius: 2px;
     padding: 20px;
     text-align: center;
 }
