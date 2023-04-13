@@ -8,7 +8,7 @@
 
 @font-face {
     font-family: "lichess";
-    src: url("../fonts/lichess.woff") format("woff"), url("../fonts/lichess.woff2") format("woff2")
+    src: url("../fonts/lichess.woff2") format("woff2"), url("../fonts/lichess.woff") format("woff")
 }
 
 
@@ -396,14 +396,15 @@ header {
 .overviewStats h2 {
     text-align: left;
     text-transform: uppercase;
-    font-size: .7rem;
+    font-size: .6rem;
     font-weight: 900;
-
+    display: flex;
+    align-items: center;
 }
 
 .overviewStats span,
 .overviewStats a {
-    font-size: 1.25rem;
+    font-size: 1rem;
 }
 
 .overviewStats button {
@@ -417,6 +418,7 @@ header {
 .li-icon {
     font-family: 'lichess';
     font-style: normal;
+    font-weight: 300;
 }
 
 .i-chess960::after {
@@ -479,6 +481,10 @@ header {
     content: '\E022'
 }
 
+.i-info::after{
+    content:'\E005'
+}
+
 .i-champion::after,
 .i-Super::after,
 .i-Standard::after,
@@ -498,6 +504,12 @@ header {
 .i-Standard + span,
 .i-Variant + span {
     font-size: 90%;
+}
+
+header .i-info{
+    background: none;
+    font-size: 1.7em;
+    color: rgba(51,51,51,.75);
 }
 
 @media print {

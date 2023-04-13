@@ -21,11 +21,13 @@ const Header = (props) => {
             <div className="overviewStats row justify-content-around">
 
                 <div className='col-sm-6 col-md-4 '>
-                    <h2>Players</h2>
+                    <h2>
+                        <span className='mr-2 li-icon i-team'></span>
+                        Players
+                    </h2>
                     <Loading />
                     <span>
                         {props.teamMembersN.toLocaleString('en-US')}
-                        <span className='ml-2 li-icon i-team'></span>
                     </span>
                 </div>
 
@@ -42,9 +44,7 @@ const Header = (props) => {
                 <div className='col-sm-6 col-md-4 '>
                     <h2>Highest rated variant/time-control
                         <Tippy content={"only variants and time controls with a minimum of 100 games played were considered"}>
-                            <button className="badge bg-secondary text-white">
-                                i
-                            </button>
+                            <button className="li-icon i-info"></button>
                         </Tippy>
                     </h2>
 
@@ -60,12 +60,11 @@ const Header = (props) => {
 
 
                 <div className='col-sm-6 col-md-4 '>
-                    <h2>Super Champion
-
+                    <h2>
+                        <span className="mr-2 li-icon i-champion"></span>
+                        Super Champion
                         <Tippy content="highest average rating across all variants and time controls: puzzle, bullet, blitz, rapid, classical, correspondence, chess960, atomic, racingKings, kingOfTheHill, crazyhouse, threeCheck, horde, antichess, ultraBullet">
-                            <button className="badge bg-secondary text-white">
-                                i
-                            </button>
+                            <button className="li-icon i-info"></button>
                         </Tippy>
 
                     </h2>
@@ -81,11 +80,11 @@ const Header = (props) => {
                 </div>
 
                 <div className='col-sm-6 col-md-4 '>
-                    <h2>Standard Champion
+                    <h2>
+                        <span className="mr-2 li-icon i-champion"></span>
+                        Standard Champion
                         <Tippy content="highest average rating across all standard time controls: puzzle, bullet, blitz, rapid, classical, correspondence, ultraBullet">
-                            <button className="badge bg-secondary text-white">
-                                i
-                            </button>
+                            <button className="li-icon i-info"></button>
                         </Tippy>
                     </h2>
                     <Loading />
@@ -100,11 +99,12 @@ const Header = (props) => {
                 </div>
 
                 <div className='col-sm-6 col-md-4 '>
-                    <h2>Variant Champions
+                    <h2>
+                        <span className="mr-2 li-icon i-champion"></span>
+                        Variant Champions
                         <Tippy content='highest average rating across chess variants: chess960, atomic, racingKings, kingOfTheHill, crazyhouse, threeCheck, horde, antichess'>
-                            <button className="badge bg-secondary text-white">
-                                i
-                            </button>
+                            <button className="li-icon i-info"></button>
+
                         </Tippy>
                     </h2>
                     <Loading />
@@ -119,14 +119,16 @@ const Header = (props) => {
                 </div>
 
                 <div className='col-sm-6 col-md-4 '>
-                    <h2>Highest rated player
+                    <h2>
+                        <span className="mr-2 li-icon i-crown"></span>
+                        Highest rated player
                     </h2>
                     <Loading />
                     <span>
                         <a href={"https://lichess.org/@/" + props.highestRatedPlayer[0]} target='_blank'>
                             {props.highestRatedPlayer[0]}
                         </a>
-                        <span className="ml-2 li-icon i-crown"></span>
+
                         <span className="d-block w-50 mx-auto badge bg-success text-white">
                             {props.highestRatedPlayer[1]}
                         </span>
@@ -138,7 +140,7 @@ const Header = (props) => {
             </div>
 
 
-        
+
         </header>
     )
 }

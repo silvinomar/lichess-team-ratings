@@ -11,13 +11,6 @@ import { ProvisionalDefault } from '../utils/defaults.js'
 import { DefaultTeamID } from '../utils/defaults.js'
 
 
-// PROBABLY WONT BE NEEDED ANYMORE (BUT KEEP IT FOR NOW)
-
-import { setDefaultMinimumOfGames } from '../utils/defaults.js'
-import { setProvisionalDefault } from '../utils/defaults.js'
-
-
-
 
 class Leaderboards extends React.Component {
     constructor(props) {
@@ -38,6 +31,8 @@ class Leaderboards extends React.Component {
             mostPlayedVariant: ["N/D","N/D"],
             highestRatedVariant: ["N/D", "N/D"],
             highestRatedPlayer: ["N/D", "N/D", "N/D"],
+            averageRatings:{},
+            totalGames:{},
             loadingState: "loading",
             fixedFilters: "",
             collapseFilters: "closed"
@@ -130,7 +125,7 @@ class Leaderboards extends React.Component {
                 //Calculate the number of games played for each variant and sort the variants by the number of games played
                 let gamesPlayed = {};
                 for (let i in variants) {
-                    console.log(variants[i]);
+                    //console.log(variants[i]);
                     gamesPlayed[variants[i]] = 0;
                 }
                 for (let player in playersData.players) {
@@ -226,11 +221,6 @@ class Leaderboards extends React.Component {
                 }
 
 
-                for (let g in clampedGamesByVariant) {
-                    console.log(g + "GAMES " + clampedGamesByVariant[g]);
-                }
-
-                // Calculate the average player rating for each variant, considering only the variants with more than 100 games (clampedGamesByVariant)  and the players with more than 20 games played
                 let averageRatingByVariant = {};
                 for (let i in variants) {
                     if (i === 'Super Champions' || i === 'Standard Champions' || i === 'Variant Champions') continue;
@@ -251,14 +241,16 @@ class Leaderboards extends React.Component {
 
                 //sort averageRating
                 averageRatingByVariant = Object.entries(averageRatingByVariant).sort((a, b) => b[1] - a[1]);
-               
+                let clampedAverageRatingByVariant = averageRatingByVariant;
+                
                 // Remove the variants with less than 100 games played, using the clampedGamesByVariant object
-                for (let i in averageRatingByVariant) {
-                    if (!(averageRatingByVariant[i][0] in clampedGamesByVariant)) {
-                        averageRatingByVariant.splice(i, 1);
+                for (let i in clampedAverageRatingByVariant) {
+                    if (!(clampedAverageRatingByVariant[i][0] in clampedAverageRatingByVariant)) {
+                        clampedAverageRatingByVariant.splice(i, 1);
                     }
                 }
-                //console.log(averageRatingByVariant);
+                console.log(averageRatingByVariant);
+                console.log(clampedAverageRatingByVariant);
 
                 //Calculate highest rated player across all variants
                 let highestRatedPlayer = "";
@@ -276,7 +268,6 @@ class Leaderboards extends React.Component {
                 }
 
 
-
                 const fetched = {
                     lastUpdate: new Date().toString(),
                     variantName: "",
@@ -286,8 +277,10 @@ class Leaderboards extends React.Component {
                     standardChampion: [ratings['Standard Champions'][0][0], ratings['Standard Champions'][0][1]],
                     variantChampion: [ratings['Variant Champions'][0][0], ratings['Variant Champions'][0][1]],
                     mostPlayedVariant: [mostPlayed, mostPlayedGames],
-                    highestRatedVariant: [averageRatingByVariant[0][0], averageRatingByVariant[0][1]],
+                    highestRatedVariant: [clampedAverageRatingByVariant[0][0], clampedAverageRatingByVariant[0][1]],
                     highestRatedPlayer:[highestRatedPlayer, highestRatedPlayerRating, highestRatedPlayerVariant],
+                    averageRatings: averageRatingByVariant,
+                    totalGames: totalGamesByVariant,
                     loadingState: ""
                 }
 
@@ -318,7 +311,6 @@ class Leaderboards extends React.Component {
                     mostPlayedVariant={this.state.mostPlayedVariant} 
                     highestRatedVariant={this.state.highestRatedVariant}
                     highestRatedPlayer={this.state.highestRatedPlayer}
-
                 />
 
                 <div className='row'>
@@ -326,7 +318,7 @@ class Leaderboards extends React.Component {
                     <Loading />
 
                     {this.state.variants.map(vname => (
-                        <Tabela key={vname} name={vname} data={this.state.ratings[vname]} minGames={this.state.minGames} prov={this.state.showProvisionalRatings} />
+                        <Tabela key={vname} name={vname} data={this.state.ratings[vname]} averageRating={this.state.averageRatings[vname]} totalGames={this.state.totalGames[vname]} minGames={this.state.minGames} prov={this.state.showProvisionalRatings} />
                     ))}
 
 

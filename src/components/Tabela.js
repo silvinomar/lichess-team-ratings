@@ -79,7 +79,7 @@ return (
 
         <div className='stats'>
             <p className='generalStat'>
-                Total games <span className='badge bg-secondary text-white'>{numberOfGames.toLocaleString('en-US')}</span>
+                Total games <span className='badge bg-secondary text-white'>{props.totalGames}</span>
             </p>
 
             <p className='generalStat'>
