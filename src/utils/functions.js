@@ -1,4 +1,4 @@
-let minimumOfGames = 10;
+let minimumOfGames = 20;
 let provisionalDefault = true;
 let teamID = "grupo-xadrez-musas";
 let fetchedData;
@@ -12,12 +12,12 @@ export function HideProvisionalRatings(players) {
     return players.filter((player) => (player[3] !== true));;
 }
 
-export function MinimumOfGames(){
+export function DefaultMinimumOfGames(){
     return minimumOfGames;
 }
 
 
-export function setMinimumOfGames(n){
+export function setDefaultMinimumOfGames(n){
     minimumOfGames = n;
 }
 

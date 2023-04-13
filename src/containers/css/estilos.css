@@ -6,6 +6,12 @@
 
 }
 
+@font-face {
+    font-family: "lichess";
+    src: url("../fonts/lichess.woff") format("woff"), url("../fonts/lichess.woff2") format("woff2")
+}
+
+
 ol,
 article {
     margin: 0;
@@ -23,7 +29,7 @@ header h1 {
     font-size: 1.5rem;
     text-transform: uppercase;
     font-weight: 500;
-    color: var(--dark-blue);
+    color: black;
     margin-bottom: 0;
 }
 
@@ -31,6 +37,12 @@ header {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+}
+
+header img {
+    height: 28px;
+    vertical-align: top;
+    margin-right: 0.5rem
 }
 
 .generalOverview {
@@ -80,7 +92,7 @@ header {
     text-transform: uppercase;
     padding-left: 15px !important;
     display: flex;
-    justify-content: space-between;
+    align-items: center;
 }
 
 
@@ -124,7 +136,7 @@ header {
 
 .viewFullRanking {
     list-style: none;
-    padding-left:0 !important;
+    padding-left: 0 !important;
     padding-right: 0 !important;
 }
 
@@ -170,6 +182,8 @@ header {
     z-index: 99;
     background: var(--gray) !important;
     margin-bottom: 10px;
+    transform: translateY(0);
+    transition: all .3s ease;
 }
 
 .filters div {
@@ -315,22 +329,24 @@ header .loading {
     transition: all ease .3s;
 }
 
+.fixed-bottom {
+    margin-bottom: 0;
+}
+
 .closed {
-    height: fit-content;
+    transform: translateY(127px);
+    transition: all .3s ease-out;
 }
 
 .closed p {
-    display: none;
-}
-
-.fixed-bottom {
-    margin-bottom: 0;
+    position: relative;
+    top: 10rem !important;
+    transition: all .3s ease;
 }
 
 .closed #customize {
     margin-bottom: 0;
 }
-
 
 header .loading {
     min-height: unset;
@@ -348,16 +364,139 @@ footer {
 .modal ol {
     max-height: 66vh;
     overflow: auto;
-    padding-left:0;
+    padding-left: 0;
 }
 
-.modal li{
-    padding-left:0;
+.modal li {
+    padding-left: 0;
 }
 
-.modal-title{
+.modal-title {
     font-size: 1.5rem;
     text-transform: uppercase;
+}
+
+header {
+    display: block;
+}
+
+.team-header h2 {
+    font-size: 1rem;
+    display: inline-block;
+    margin-right: .6rem;
+}
+
+.overviewStats>div {
+    border: 1px solid black;
+    padding: 20px;
+    text-align: center;
+}
+
+.overviewStats h2 {
+    text-align: left;
+    text-transform: uppercase;
+    font-size: .7rem;
+    font-weight: 900;
+
+}
+
+.overviewStats span,
+.overviewStats a {
+    font-size: 1.25rem;
+}
+
+.overviewStats button {
+    border: none;
+    text-transform: lowercase;
+    font-size: .8rem;
+    margin: 0 .5rem;
+    font-weight: 500;
+}
+
+.li-icon {
+    font-family: 'lichess';
+    font-style: normal;
+}
+
+.i-chess960::after {
+    content: '\E01B'
+}
+
+.i-atomic::after {
+    content: '\E031'
+}
+
+.i-blitz::after {
+    content: '\E01D'
+}
+
+.i-crazyhouse::after {
+    content: '\E00B'
+}
+
+.i-bullet::after {
+    content: '\E047'
+}
+
+.i-correspondence::after {
+    content: '\E02E'
+}
+
+.i-horde::after {
+    content: '\E052'
+}
+
+.i-puzzle::after {
+    content: '\E021'
+}
+
+.i-classical::after {
+    content: '\E01F'
+}
+
+.i-rapid::after {
+    content: '\E017'
+}
+
+.i-ultraBullet::after {
+    content: '\E06E'
+}
+
+.i-antichess::after {
+    content: '\E033'
+}
+
+.i-kingOfTheHill::after {
+    content: '\E01C'
+}
+
+.i-racingKings::after {
+    content: '\E00A'
+}
+
+.i-threeCheck::after {
+    content: '\E022'
+}
+
+.i-champion::after,
+.i-Super::after,
+.i-Standard::after,
+.i-Variant::after {
+    content: '\E05A'
+}
+
+.i-team::after {
+    content: '\E059'
+}
+
+.i-crown::after {
+    content: '\E036'
+}
+
+.i-Super + span,
+.i-Standard + span,
+.i-Variant + span {
+    font-size: 90%;
 }
 
 @media print {

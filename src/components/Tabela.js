@@ -32,8 +32,8 @@ const StatsTable = (props) => {
         return fdata;
     }
 
-     // calculate the average rating    
-     function calculateAvgRating(players) {
+    // calculate the average rating    
+    function calculateAvgRating(players) {
         let sum = 0;
         players.forEach((player) => {
             sum += player[1];
@@ -52,50 +52,52 @@ const StatsTable = (props) => {
 
 
     function composeTableData(players, max) {
-       let li = players.slice(0, max).map((player) => <a href={"https://lichess.org/@/" + player[0]} target="_blank" key={player[0]}><li>{player[0]} <span className='rating'>{player[1]}<span className='provisional'>{player[3] ? '?' : ''}</span></span></li></a>);
+        let li = players.slice(0, max).map((player) => <a href={"https://lichess.org/@/" + player[0]} target="_blank" key={player[0]}><li>{player[0]} <span className='rating'>{player[1]}<span className='provisional'>{player[3] ? '?' : ''}</span></span></li></a>);
         if (max < numberOfPlayers) {
+
             li.push(
                 <li className="viewFullRanking">
-                    <button type="button" data-bs-toggle="modal" data-bs-target={"#"+statName+"FullRankingModal"}>
+                    <button type="button" data-bs-toggle="modal" data-bs-target={"#" + statName + "FullRankingModal"}>
                         full ranking
                         <span className='m-0'> ({numberOfPlayers} players)</span>
                     </button>
                 </li>
             )
         }
-        return li;
-    }
+    return li;
+}
 
 
-    return (
-        <article className={"col-sm-6 col-md-4 col-xl-3 text-dark variant-container px-0 " + tableVisibilityClass + " " + specialTableClass}>
-            <a>
-                <h3 className="lead bg-dark text-white p-2 mb-0">
-                    {statName}
-                </h3>
-            </a>
+return (
+    <article id="leaderboards" className={"col-sm-6 col-md-4 col-xl-3 text-dark variant-container px-0 " + tableVisibilityClass + " " + specialTableClass}>
 
-            <div className='stats'>
-                <p className='generalStat'>
-                    Total games <span className='badge bg-secondary text-white'>{numberOfGames.toLocaleString('en-US')}</span>
-                </p>
-
-                <p className='generalStat'>
-                    Average rating <span className='badge bg-secondary text-white'>{avgRating}</span>
-                </p>
-            </div>
-            <ol className="px-0 mb-0">
-                {tableData}
-            </ol>
-
-            
-            <FullRankingModal key={statName} variant={statName} data={fullTableData} />
+        <h3 className="lead bg-dark text-white p-2 mb-0">
+            <span class={"mr-2 li-icon i-" + statName}></span>
+            <span>{statName}</span>
+        </h3>
 
 
-        
-           
-        </article>
-    )
+        <div className='stats'>
+            <p className='generalStat'>
+                Total games <span className='badge bg-secondary text-white'>{numberOfGames.toLocaleString('en-US')}</span>
+            </p>
+
+            <p className='generalStat'>
+                Average rating <span className='badge bg-secondary text-white'>{avgRating}</span>
+            </p>
+        </div>
+        <ol className="px-0 mb-0">
+            {tableData}
+        </ol>
+
+
+        <FullRankingModal key={statName} variant={statName} data={fullTableData} />
+
+
+
+
+    </article>
+)
 }
 
 export default StatsTable

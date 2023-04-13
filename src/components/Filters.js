@@ -1,9 +1,8 @@
 import React from 'react'
 import filterIcon from '../img/filter.png';
 
-import { Team } from '../utils/functions.js'
-import { MinimumOfGames } from '../utils/functions.js'
-import { ProvisionalDefault } from '../utils/functions.js'
+import { DefaultMinimumOfGames } from '../utils/defaults.js'
+import { ProvisionalDefault } from '../utils/defaults'
 
 
 const Filters = (props) => {
@@ -14,8 +13,8 @@ const Filters = (props) => {
 
                 <div className='d-flex justify-content-between align-items-center'>
                     <div className='my-1 filter'>
-                        <b>Team ID</b>
-                        <input type='text' id='teamName' name='teamName' required placeholder={Team()}></input>
+                        <b>Find a new team</b>
+                        <input type='text' id='teamName' name='teamName' required placeholder="team-id"></input>
                         <input type='submit' id="newTeam" value="Search" onClick={props.changeTeamName}></input>
                     </div>
                     <button id="customize" className="btn btn-outline-secondary" onClick={props.toggleFilters}>
@@ -28,7 +27,7 @@ const Filters = (props) => {
                     <p className='my-1 filter'>
                         <b>Number of games</b>
                         <span>Minimum of </span>
-                        <input type="number" name="minGames" id="minGames" placeholder={MinimumOfGames()} min="0" maxLength="5" onChange={props.changeMinGames}></input>
+                        <input type="number" name="minGames" id="minGames" placeholder={DefaultMinimumOfGames()} min="0" maxLength="5" onChange={props.changeMinGames}></input>
                         <span> rated games (per player)</span>
                     </p>
                     <p className='my-1 filter provisionalInput'>
