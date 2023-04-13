@@ -52,7 +52,14 @@ const StatsTable = (props) => {
 
 
     function composeTableData(players, max) {
-        let li = players.slice(0, max).map((player) => <a href={"https://lichess.org/@/" + player[0]} target="_blank" key={player[0]}><li>{player[0]} <span className='rating'>{player[1]}<span className='provisional'>{player[3] ? '?' : ''}</span></span></li></a>);
+        let li = players.slice(0, max).map((player) => 
+            <a href={"https://lichess.org/@/" + player[0]} target="_blank" key={"li-"+player[0]}>
+                <li>{player[0]} <span className='rating'>{player[1]}
+                    <span className='provisional'>
+                        {player[3] ? '?' : ''}
+                    </span></span>
+                </li>
+            </a>);
         if (max < numberOfPlayers) {
 
             li.push(
@@ -72,14 +79,14 @@ return (
     <article id="leaderboards" className={"col-sm-6 col-md-4 col-xl-3 text-dark variant-container px-0 " + tableVisibilityClass + " " + specialTableClass}>
 
         <h3 className="lead bg-dark text-white p-2 mb-0">
-            <span class={"mr-2 li-icon i-" + statName}></span>
+            <span className={"mr-2 li-icon i-" + statName}></span>
             <span>{statName}</span>
         </h3>
 
 
         <div className='stats'>
             <p className='generalStat'>
-                Total games <span className='badge bg-secondary text-white'>{props.totalGames}</span>
+                Total games <span className='badge bg-secondary text-white'>{numberOfGames}</span>
             </p>
 
             <p className='generalStat'>

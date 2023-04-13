@@ -36,7 +36,7 @@ const Header = (props) => {
                     <Loading />
                     <span>
                         {props.mostPlayedVariant[0]}
-                        <i class={"ml-2 li-icon i-" + props.mostPlayedVariant[0]}></i>
+                        <i className={"ml-2 li-icon i-" + props.mostPlayedVariant[0]}></i>
                         <span className="d-block mx-auto w-50 badge bg-success text-white">{props.mostPlayedVariant[1].toLocaleString('en-US')}</span>
                     </span>
                 </div>
@@ -52,7 +52,7 @@ const Header = (props) => {
                     <Loading />
                     <span>
                         {props.highestRatedVariant[0]}
-                        <i class={"ml-2 li-icon i-" + props.highestRatedVariant[0]}></i>
+                        <i className={"ml-2 li-icon i-" + props.highestRatedVariant[0]}></i>
                         <span className="d-block w-50 mx-auto badge bg-success text-white">{props.highestRatedVariant[1]}</span>
                     </span>
                 </div>
@@ -130,7 +130,7 @@ const Header = (props) => {
                         </a>
 
                         <span className="d-block w-50 mx-auto badge bg-success text-white">
-                            {props.highestRatedPlayer[1]}
+                            {props.highestRatedPlayer[1]} <span className={"li-icon i-"+props.highestRatedPlayer[2]}></span>
                         </span>
 
                     </span>

@@ -26,13 +26,13 @@ class Leaderboards extends React.Component {
             teamMembers: "N/D",
             avgRating: "N/D",
             superChampion: ["N/D", "N/D"],
-            standardChampion: ["N/D","N/D"],
-            variantChampion: ["N/D","N/D"],
-            mostPlayedVariant: ["N/D","N/D"],
+            standardChampion: ["N/D", "N/D"],
+            variantChampion: ["N/D", "N/D"],
+            mostPlayedVariant: ["N/D", "N/D"],
             highestRatedVariant: ["N/D", "N/D"],
             highestRatedPlayer: ["N/D", "N/D", "N/D"],
-            averageRatings:{},
-            totalGames:{},
+            averageRatings: {},
+            totalGames: {},
             loadingState: "loading",
             fixedFilters: "",
             collapseFilters: "closed"
@@ -221,37 +221,44 @@ class Leaderboards extends React.Component {
                 }
 
 
-                let averageRatingByVariant = {};
+
+                let tempAvgRating = {};
                 for (let i in variants) {
-                    if (i === 'Super Champions' || i === 'Standard Champions' || i === 'Variant Champions') continue;
-                    averageRatingByVariant[variants[i]] = 0;
+                    tempAvgRating[variants[i]] = 0;
                     let players = 0;
                     let games = 0;
                     for (let j in ratings[variants[i]]) {
                         if (ratings[variants[i]][j][2] > 20) {
                             games += ratings[variants[i]][j][2];
-                            averageRatingByVariant[variants[i]] += ratings[variants[i]][j][1];
+                            tempAvgRating[variants[i]] += ratings[variants[i]][j][1];
                             players++;
                         }
                     }
                     //divide averageRatingByVariant by the number of players and fix the decimal places to 0
-    
-                    averageRatingByVariant[variants[i]] = (averageRatingByVariant[variants[i]]/players).toFixed(0);
+                    tempAvgRating[variants[i]] = (tempAvgRating[variants[i]] / players).toFixed(0);
                 }
-
-                //sort averageRating
-                averageRatingByVariant = Object.entries(averageRatingByVariant).sort((a, b) => b[1] - a[1]);
-                let clampedAverageRatingByVariant = averageRatingByVariant;
+                // Sort the averageRatingByVariant object by rating (descendent)
+                const averageRatingByVariant = Object.fromEntries(
+                    Object.entries(tempAvgRating).sort(([,a], [,b]) => b - a)
+                  );
                 
-                // Remove the variants with less than 100 games played, using the clampedGamesByVariant object
-                for (let i in clampedAverageRatingByVariant) {
-                    if (!(clampedAverageRatingByVariant[i][0] in clampedAverageRatingByVariant)) {
-                        clampedAverageRatingByVariant.splice(i, 1);
+                // Clone the averageRatingByVariant object in order to remove from the cloned object, the variants which have less than 100 games played
+                let clampedAverageRatingByVariant = {};
+                for (let i in variants) {
+                    if (variants[i] === 'Super Champions' || variants[i] === 'Standard Champions' || variants[i] === 'Variant Champions') continue;
+                    if (totalGamesByVariant[variants[i]] > MinimumOfGamesToCalculateAverage()) {
+                        clampedAverageRatingByVariant[variants[i]] = averageRatingByVariant[variants[i]];
                     }
                 }
-                console.log(averageRatingByVariant);
-                console.log(clampedAverageRatingByVariant);
+                // Sort the averageRatingByVariant object by rating (descendent)
+                const averageRatingByMostPlayedVariants = Object.fromEntries(
+                    Object.entries(clampedAverageRatingByVariant).sort(([,a], [,b]) => b - a)
+                  );
 
+                const [[highestRatedVariant, highestRatedVariantRating]] = Object.entries(averageRatingByMostPlayedVariants);
+
+               
+                  
                 //Calculate highest rated player across all variants
                 let highestRatedPlayer = "";
                 let highestRatedPlayerRating = 0;
@@ -273,12 +280,12 @@ class Leaderboards extends React.Component {
                     variantName: "",
                     variants: variants,
                     ratings: ratings,
-                    superChampion: [ratings['Super Champions'][0][0],ratings['Super Champions'][0][1]],
+                    superChampion: [ratings['Super Champions'][0][0], ratings['Super Champions'][0][1]],
                     standardChampion: [ratings['Standard Champions'][0][0], ratings['Standard Champions'][0][1]],
                     variantChampion: [ratings['Variant Champions'][0][0], ratings['Variant Champions'][0][1]],
                     mostPlayedVariant: [mostPlayed, mostPlayedGames],
-                    highestRatedVariant: [clampedAverageRatingByVariant[0][0], clampedAverageRatingByVariant[0][1]],
-                    highestRatedPlayer:[highestRatedPlayer, highestRatedPlayerRating, highestRatedPlayerVariant],
+                    highestRatedVariant: [highestRatedVariant, highestRatedVariantRating],
+                    highestRatedPlayer: [highestRatedPlayer, highestRatedPlayerRating, highestRatedPlayerVariant],
                     averageRatings: averageRatingByVariant,
                     totalGames: totalGamesByVariant,
                     loadingState: ""
@@ -305,10 +312,10 @@ class Leaderboards extends React.Component {
             <section className='leaderboard-container container' >
 
                 <Header teamName={this.state.team} teamMembersN={this.state.teamMembers}
-                    superChampion={this.state.superChampion} 
-                    standardChampion={this.state.standardChampion} 
+                    superChampion={this.state.superChampion}
+                    standardChampion={this.state.standardChampion}
                     variantChampion={this.state.variantChampion}
-                    mostPlayedVariant={this.state.mostPlayedVariant} 
+                    mostPlayedVariant={this.state.mostPlayedVariant}
                     highestRatedVariant={this.state.highestRatedVariant}
                     highestRatedPlayer={this.state.highestRatedPlayer}
                 />
