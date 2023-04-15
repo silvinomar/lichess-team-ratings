@@ -387,7 +387,7 @@ header {
 }
 
 .overviewStats>div {
-    border: 1px solid rgba(51,51,51,.25);
+    border: 1px solid rgba(51, 51, 51, .25);
     border-radius: 2px;
     padding: 20px;
     text-align: center;
@@ -411,7 +411,7 @@ header {
     border: none;
     text-transform: lowercase;
     font-size: .8rem;
-    margin: 0 .5rem;
+    margin: 0 .1rem;
     font-weight: 500;
 }
 
@@ -481,8 +481,8 @@ header {
     content: '\E022'
 }
 
-.i-info::after{
-    content:'\E005'
+.i-info::after {
+    content: '\E005'
 }
 
 .i-champion::after,
@@ -500,16 +500,21 @@ header {
     content: '\E036'
 }
 
-.i-Super + span,
-.i-Standard + span,
-.i-Variant + span {
+.i-Super+span,
+.i-Standard+span,
+.i-Variant+span {
     font-size: 90%;
 }
 
-header .i-info{
+header .i-info {
     background: none;
     font-size: 1.7em;
-    color: rgba(51,51,51,.75);
+    color: rgba(51, 51, 51, .75);
+}
+
+.player-title {
+    color: #bf811d;
+    font-weight: 700;
 }
 
 @media print {

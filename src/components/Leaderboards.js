@@ -169,7 +169,7 @@ class Leaderboards extends React.Component {
                         all_games_cnt += playersData.players[player]['perfs'][i]['games'];
                         all_avg += playersData.players[player]['perfs'][i]['rating'];
                         if (!(i in ratings)) ratings[i] = [];
-                        ratings[i].push([playersData.players[player].username, playersData.players[player]['perfs'][i]['rating'], playersData.players[player]['perfs'][i]['games'], playersData.players[player]['perfs'][i]['prov']]);
+                        ratings[i].push([playersData.players[player].username, playersData.players[player]['perfs'][i]['rating'], playersData.players[player]['perfs'][i]['games'], playersData.players[player]['perfs'][i]['prov'], playersData.players[player]['title']]);
                     }
                     weird_avg /= weird_modes_cntr;
                     standard_avg /= std_modes_cntr;
