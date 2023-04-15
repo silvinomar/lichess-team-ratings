@@ -1,25 +1,26 @@
-import React, { Component } from 'react';
+import React from "react";
 import {
-    HashRouter,
-    Routes,
-    Route,
+    BrowserRouter,
+    Routes, // instead of "Switch"
+    Route
 } from "react-router-dom";
 
 import './css/bootstrap.min.css';
 import './css/estilos.css';
 import Leaderboards from '../components/Leaderboards.js'
 
-
 function App() {
 
+ 
+
     return (
-        //Rotas
-        <HashRouter>
+        <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Leaderboards />} />
+                <Route path="*" element={<Leaderboards />} />
             </Routes>
 
-        </HashRouter>
+
+        </BrowserRouter>
     )
 }
 

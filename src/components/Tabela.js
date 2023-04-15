@@ -54,7 +54,7 @@ const StatsTable = (props) => {
     function composeTableData(players, max) {
         let li = players.slice(0, max).map((player) => 
             <a href={"https://lichess.org/@/" + player[0]} target="_blank" key={"li-"+player[0]}>
-                <li><span class="player-title">{player[4]} </span>{player[0]} <span className='rating'>{player[1]}
+                <li><span className="player-title">{player[4]} </span>{player[0]} <span className='rating'>{player[1]}
                     <span className='provisional'>
                         {player[3] ? '?' : ''}
                     </span></span>
