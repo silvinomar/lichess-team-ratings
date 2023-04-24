@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/lichess-team-ratings/static/css/main.9f4c3eb9.css",
-    "main.js": "/lichess-team-ratings/static/js/main.1d66c949.js",
+    "main.css": "/lichess-team-ratings/static/css/main.d0d270ed.css",
+    "main.js": "/lichess-team-ratings/static/js/main.18365d5a.js",
     "static/media/lichess.woff": "/lichess-team-ratings/static/media/lichess.0cf5357db80f7bf7eb53.woff",
     "static/media/lichess.woff2": "/lichess-team-ratings/static/media/lichess.51127fa39f7f91868f90.woff2",
     "index.html": "/lichess-team-ratings/index.html",
-    "main.9f4c3eb9.css.map": "/lichess-team-ratings/static/css/main.9f4c3eb9.css.map",
-    "main.1d66c949.js.map": "/lichess-team-ratings/static/js/main.1d66c949.js.map"
+    "main.d0d270ed.css.map": "/lichess-team-ratings/static/css/main.d0d270ed.css.map",
+    "main.18365d5a.js.map": "/lichess-team-ratings/static/js/main.18365d5a.js.map"
   },
   "entrypoints": [
-    "static/css/main.9f4c3eb9.css",
-    "static/js/main.1d66c949.js"
+    "static/css/main.d0d270ed.css",
+    "static/js/main.18365d5a.js"
   ]
 }
