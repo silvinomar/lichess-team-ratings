@@ -82,7 +82,7 @@ const Header = (props) => {
                 <div className='col-sm-6 col-md-4 '>
                     <h2>
                         <span className="mr-2 li-icon i-champion"></span>
-                        Standard Champion
+                        Standards Champion
                         <Tippy content="highest average rating across all standard time controls: puzzle, bullet, blitz, rapid, classical, correspondence, ultraBullet">
                             <button className="li-icon i-info"></button>
                         </Tippy>
@@ -101,7 +101,7 @@ const Header = (props) => {
                 <div className='col-sm-6 col-md-4 '>
                     <h2>
                         <span className="mr-2 li-icon i-champion"></span>
-                        Variant Champions
+                        Variants Champion
                         <Tippy content='highest average rating across chess variants: chess960, atomic, racingKings, kingOfTheHill, crazyhouse, threeCheck, horde, antichess'>
                             <button className="li-icon i-info"></button>
 
@@ -121,7 +121,7 @@ const Header = (props) => {
                 <div className='col-sm-6 col-md-4 '>
                     <h2>
                         <span className="mr-2 li-icon i-crown"></span>
-                        Highest rated player
+                        Highest rated
                     </h2>
                     <Loading />
                     <span>

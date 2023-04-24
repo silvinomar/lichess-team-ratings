@@ -290,6 +290,8 @@ header .loading {
     background: var(--light-blue) !important;
     color: white !important;
     font-weight: 400;
+    line-height: 162%;
+    font-size: 90%;
 }
 
 .statDescription {
@@ -487,8 +489,8 @@ header {
 
 .i-champion::after,
 .i-Super::after,
-.i-Standard::after,
-.i-Variant::after {
+.i-Standards::after,
+.i-Variants::after {
     content: '\E05A'
 }
 

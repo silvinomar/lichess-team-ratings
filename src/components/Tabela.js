@@ -9,7 +9,7 @@ const StatsTable = (props) => {
     const filteredData = filterData(props.data, minNumerOfGames);
 
     let tableVisibilityClass = (filteredData.length < 1) ? "hide" : "";
-    let specialTableClass = (statName == "Super Champions" || statName == "Standard Champions" || statName == "Variant Champions") ? "specialHeader" : "";
+    let specialTableClass = (statName == "Super Champions" || statName == "Standards Champions" || statName == "Variants Champions") ? "specialHeader" : "";
 
 
     let numberOfPlayers = filteredData.length;
@@ -60,7 +60,7 @@ const StatsTable = (props) => {
                     </span></span>
                 </li>
             </a>);
-        if (max < numberOfPlayers) {
+        if (max < numberOfPlayers && !specialTableClass) {
 
             li.push(
                 <li className="viewFullRanking">

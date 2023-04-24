@@ -28,6 +28,7 @@ class Leaderboards extends React.Component {
             superChampion: ["N/D", "N/D"],
             standardChampion: ["N/D", "N/D"],
             variantChampion: ["N/D", "N/D"],
+            championsPerVariant: {},
             mostPlayedVariant: ["N/D", "N/D"],
             highestRatedVariant: ["N/D", "N/D"],
             highestRatedPlayer: ["N/D", "N/D", "N/D"],
@@ -99,15 +100,15 @@ class Leaderboards extends React.Component {
 
                 let variants = [];
                 variants.push('Super Champions')
-                variants.push('Standard Champions')
-                variants.push('Variant Champions')
+                variants.push('Standards Champions')
+                variants.push('Variants Champions')
 
                 let ratings = {};
                 ratings['Super Champions'] = [];
-                ratings['Standard Champions'] = [];
-                ratings['Variant Champions'] = [];
+                ratings['Standards Champions'] = [];
+                ratings['Variants Champions'] = [];
 
-
+             
                 let std_modes_cntr = 0;
                 for (let player in playersData.players) {
                     for (let i in playersData.players[player].perfs) {
@@ -122,6 +123,7 @@ class Leaderboards extends React.Component {
                     }
                 }
 
+            
                 //Calculate the number of games played for each variant and sort the variants by the number of games played
                 let gamesPlayed = {};
                 for (let i in variants) {
@@ -175,18 +177,30 @@ class Leaderboards extends React.Component {
                     standard_avg /= std_modes_cntr;
                     all_avg /= all_modes_cntr;
                     ratings['Super Champions'].push([playersData.players[player].username, Math.round(all_avg), all_games_cnt]);
-                    ratings['Standard Champions'].push([playersData.players[player].username, Math.round(standard_avg), standard_games_cnt]);
-                    ratings['Variant Champions'].push([playersData.players[player].username, Math.round(weird_avg), weird_games_cnt]);
+                    ratings['Standards Champions'].push([playersData.players[player].username, Math.round(standard_avg), standard_games_cnt]);
+                    ratings['Variants Champions'].push([playersData.players[player].username, Math.round(weird_avg), weird_games_cnt]);
                 }
 
                 //Ordenar cada variante por rating (descendente)
-                for (let i in ratings) ratings[i] = ratings[i].sort((a, b) => b[1] - a[1]);
+                for (let i in ratings) {
+                    ratings[i] = ratings[i].sort((a, b) => b[1] - a[1]);
+                    //For the this.state.championsPerVariant object, create a property for each variant and the first player in the ratings[i] as the value, as long as the player has more than 20 games played and players with the provisional rating equal to ProvisionalDefault(), otherwise, set the value to the first player to meet the requirements
+                        for (let j in ratings[i]) {
+                            if (ratings[i][j][2] > 20) {   
+                                this.state.championsPerVariant[i] = [ratings[i][j][0], ratings[i][j][1]];
+                                console.log(i + " champion: " + this.state.championsPerVariant[i])
+                                break;
+                            }
+                        }
+                    
+                }
+            
 
                 //Calculate the most played variant, excluding Super Champions, Standard Champions and Variant Champions
                 let mostPlayed = "";
                 let mostPlayedGames = 0;
                 for (let i in ratings) {
-                    if (i === 'Super Champions' || i === 'Standard Champions' || i === 'Variant Champions') continue;
+                    if (i === 'Super Champions' || i === 'Standards Champions' || i === 'Variants Champions') continue;
                     let games = 0;
                     for (let j in ratings[i]) {
                         games += ratings[i][j][2];
@@ -201,7 +215,7 @@ class Leaderboards extends React.Component {
                 let totalGamesByVariant = {};
                 for (let i in variants) {
 
-                    if (variants[i] === 'Super Champions' || variants[i] === 'Standard Champions' || variants[i] === 'Variant Champions') continue;
+                    if (variants[i] === 'Super Champions' || variants[i] === 'Standards Champions' || variants[i] === 'Variants Champions') continue;
 
                     totalGamesByVariant[variants[i]] = 0;
                     for (let player in ratings[variants[i]]) {
@@ -214,7 +228,7 @@ class Leaderboards extends React.Component {
                 //Clamp the totalGamesByVariant to include only the variants with more than 100 games played
                 let clampedGamesByVariant = {};
                 for (let i in variants) {
-                    if (variants[i] === 'Super Champions' || variants[i] === 'Standard Champions' || variants[i] === 'Variant Champions') continue;
+                    if (variants[i] === 'Super Champions' || variants[i] === 'Standards Champions' || variants[i] === 'Variants Champions') continue;
                     if (totalGamesByVariant[variants[i]] > MinimumOfGamesToCalculateAverage()) {
                         clampedGamesByVariant[variants[i]] = totalGamesByVariant[variants[i]];
                     }
@@ -239,32 +253,32 @@ class Leaderboards extends React.Component {
                 }
                 // Sort the averageRatingByVariant object by rating (descendent)
                 const averageRatingByVariant = Object.fromEntries(
-                    Object.entries(tempAvgRating).sort(([,a], [,b]) => b - a)
-                  );
-                
+                    Object.entries(tempAvgRating).sort(([, a], [, b]) => b - a)
+                );
+
                 // Clone the averageRatingByVariant object in order to remove from the cloned object, the variants which have less than 100 games played
                 let clampedAverageRatingByVariant = {};
                 for (let i in variants) {
-                    if (variants[i] === 'Super Champions' || variants[i] === 'Standard Champions' || variants[i] === 'Variant Champions') continue;
+                    if (variants[i] === 'Super Champions' || variants[i] === 'Standards Champions' || variants[i] === 'Variants Champions') continue;
                     if (totalGamesByVariant[variants[i]] > MinimumOfGamesToCalculateAverage()) {
                         clampedAverageRatingByVariant[variants[i]] = averageRatingByVariant[variants[i]];
                     }
                 }
                 // Sort the averageRatingByVariant object by rating (descendent)
                 const averageRatingByMostPlayedVariants = Object.fromEntries(
-                    Object.entries(clampedAverageRatingByVariant).sort(([,a], [,b]) => b - a)
-                  );
+                    Object.entries(clampedAverageRatingByVariant).sort(([, a], [, b]) => b - a)
+                );
 
                 const [[highestRatedVariant, highestRatedVariantRating]] = Object.entries(averageRatingByMostPlayedVariants);
 
-               
-                  
+
+
                 //Calculate highest rated player across all variants
                 let highestRatedPlayer = "";
                 let highestRatedPlayerRating = 0;
                 let highestRatedPlayerVariant = "";
                 for (let i in ratings) {
-                    if (i === 'Super Champions' || i === 'Standard Champions' || i === 'Variant Champions') continue;
+                    if (i === 'Super Champions' || i === 'Standards Champions' || i === 'Variants Champions') continue;
                     for (let j in ratings[i]) {
                         if (ratings[i][j][1] > highestRatedPlayerRating) {
                             highestRatedPlayer = ratings[i][j][0];
@@ -281,8 +295,8 @@ class Leaderboards extends React.Component {
                     variants: variants,
                     ratings: ratings,
                     superChampion: [ratings['Super Champions'][0][0], ratings['Super Champions'][0][1]],
-                    standardChampion: [ratings['Standard Champions'][0][0], ratings['Standard Champions'][0][1]],
-                    variantChampion: [ratings['Variant Champions'][0][0], ratings['Variant Champions'][0][1]],
+                    standardChampion: [ratings['Standards Champions'][0][0], ratings['Standards Champions'][0][1]],
+                    variantChampion: [ratings['Variants Champions'][0][0], ratings['Variants Champions'][0][1]],
                     mostPlayedVariant: [mostPlayed, mostPlayedGames],
                     highestRatedVariant: [highestRatedVariant, highestRatedVariantRating],
                     highestRatedPlayer: [highestRatedPlayer, highestRatedPlayerRating, highestRatedPlayerVariant],
@@ -318,6 +332,7 @@ class Leaderboards extends React.Component {
                     mostPlayedVariant={this.state.mostPlayedVariant}
                     highestRatedVariant={this.state.highestRatedVariant}
                     highestRatedPlayer={this.state.highestRatedPlayer}
+                    //champions={this.state.championsPerVariant}
                 />
 
                 <div className='row'>
