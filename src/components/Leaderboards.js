@@ -52,8 +52,10 @@ class Leaderboards extends React.Component {
 
     handleChangeTeamName = () => {
         let team = document.getElementById("teamName").value;
-        this.setState({ team: team });
-        this.handleFetch(team);
+        if(team !== "") {
+            this.setState({ team: team });
+            this.handleFetch(team);
+        }
     }
 
     handleChangeMinGames = (event) => {
@@ -71,6 +73,8 @@ class Leaderboards extends React.Component {
 
     handleFetch = (team) => {
         this.setState({ loadingState: "loading ", teamMembers: "N/D", avgRating: "N/D", superChampion: "N/D", superChampionRating: "N/D", standardChampion: "N/D", standardChampionRating: "N/D", variantChampion: "N/D", variantChampionRating: "N/D", mostPlayedVariant: "N/D", mostPlayedVariantNumber: "N/D" });
+
+        document.getElementById("filtersTab").classList.add("hidden");
 
         //find all elements with class "loading" and add the class "loading-animation"
         let loadingElements = document.getElementsByClassName("loading");
@@ -96,7 +100,7 @@ class Leaderboards extends React.Component {
                     return;
                 }
 
-                this.state.teamMembers = playersData.players.length;
+                this.setState({ teamMembers: playersData.players.length });
 
                 let variants = [];
                 variants.push('Super Champions')
@@ -188,7 +192,8 @@ class Leaderboards extends React.Component {
                         for (let j in ratings[i]) {
                             if (ratings[i][j][2] > 20) {   
                                 this.state.championsPerVariant[i] = [ratings[i][j][0], ratings[i][j][1]];
-                                console.log(i + " champion: " + this.state.championsPerVariant[i])
+
+                                // console.log(i + " champion: " + this.state.championsPerVariant[i])
                                 break;
                             }
                         }
@@ -240,10 +245,8 @@ class Leaderboards extends React.Component {
                 for (let i in variants) {
                     tempAvgRating[variants[i]] = 0;
                     let players = 0;
-                    let games = 0;
                     for (let j in ratings[variants[i]]) {
                         if (ratings[variants[i]][j][2] > 20) {
-                            games += ratings[variants[i]][j][2];
                             tempAvgRating[variants[i]] += ratings[variants[i]][j][1];
                             players++;
                         }
@@ -305,11 +308,16 @@ class Leaderboards extends React.Component {
                     loadingState: ""
                 }
 
+                
+                //remove a class from a specific element by id  
+                document.getElementById("filtersTab").classList.remove("hidden");
+
                 //find all elements with class name "loading" and remove the class loading-animation
                 let loadingElements = document.getElementsByClassName("loading");
                 for (let i = 0; i < loadingElements.length; i++) {
                     loadingElements[i].classList.remove("loading-animation");
                 }
+
 
                 this.setState(fetched);
             })
