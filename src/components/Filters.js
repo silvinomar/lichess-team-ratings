@@ -8,17 +8,26 @@ import { ProvisionalDefault } from '../utils/defaults'
 const Filters = (props) => {
 
     return (
-        <section className={'filters py-3 fixed-bottom' + props.fixedStatus + " " + props.collapseStatus}>
+        <section id="filtersTab" className={'filters  py-3 fixed-bottom' + props.fixedStatus + " " + props.collapseStatus}>
             <div className='lead small container'>
 
                 <div className='d-flex justify-content-between align-items-center'>
-                    <div className='my-1 filter'>
+                    {/* 
+                   <div className='my-1 filter'>
                         <b>Find a new team</b>
                         <input type='text' id='teamName' name='teamName' required placeholder="team-id"></input>
                         <input type='submit' id="newTeam" value="Search" onClick={props.changeTeamName}></input>
                     </div>
+                    */ }
+                    <div className="input-group mb-1">
+                        <input type="text" id='teamName' className="form-control" placeholder="Find a new team" aria-label="Team ID" aria-describedby="search-team">
+                        </input>
+                        <input type='submit' className="input-group-text" value="Search" onClick={props.changeTeamName} id="search-team">
+                        </input>
+                    </div>
+
                     <button id="customize" className="btn btn-outline-secondary" onClick={props.toggleFilters}>
-                        Customize <img className="icon" src={filterIcon}></img>
+                        <span>Customize</span> <img alt="An icon consisting of three horizontal lines stacked on top of each other. The icon serves as a visual cue to the user that they can interact with the button to access additional options." className="icon" src={filterIcon}></img>
                     </button>
                 </div>
 
