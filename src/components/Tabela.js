@@ -47,7 +47,7 @@ const StatsTable = (props) => {
         players.forEach((player) => {
             games += player[2];
         });
-        return games;
+        return games.toLocaleString('en-US');
     }
 
 
