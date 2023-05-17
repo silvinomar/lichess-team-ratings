@@ -24,6 +24,9 @@ const Header = (props) => {
                     <h2>
                         <span className='mr-2 li-icon i-team'></span>
                         Players
+                        <Tippy content={"Doesn't include accounts who violated the Lichess Terms of Service. " + props.excluded + " excluded"}>
+                            <button className="li-icon i-info"></button>
+                        </Tippy>
                     </h2>
                     <Loading />
                     <span>

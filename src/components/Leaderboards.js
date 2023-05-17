@@ -24,6 +24,7 @@ class Leaderboards extends React.Component {
             ratings: {},
             variantName: "",
             teamMembers: "N/D",
+            excluded:0,
             avgRating: "N/D",
             superChampion: ["N/D", "N/D"],
             standardChampion: ["N/D", "N/D"],
@@ -100,8 +101,6 @@ class Leaderboards extends React.Component {
                     return;
                 }
 
-                this.setState({ teamMembers: playersData.players.length });
-
                 let variants = [];
                 variants.push('Super Champions')
                 variants.push('Standards Champions')
@@ -115,9 +114,15 @@ class Leaderboards extends React.Component {
              
                 let std_modes_cntr = 0;
                 for (let player in playersData.players) {
+                    // remove banned players from the list of players
+                    if (playersData.players[player].tosViolation){
+                        //console.log(playersData.players[player].username + " has been banned for TOS violation");
+                        playersData.players.splice(player, 1);
+                        this.setState({excluded:this.state.excluded+1});
+                    }
                     for (let i in playersData.players[player].perfs) {
                         if (!variants.includes(i) && i !== "streak" && i !== "storm" && i !== "racer") {
-                            variants.push(i)
+                            variants.push(i);
                             if (i === 'ultraBullet' || i === 'bullet' || i === 'blitz' ||
                                 i === 'rapid' || i === 'classical' ||
                                 i === 'correspondence' || i === 'puzzle') {
@@ -294,6 +299,7 @@ class Leaderboards extends React.Component {
 
                 const fetched = {
                     lastUpdate: new Date().toString(),
+                    teamMembers: playersData.players.length,
                     variantName: "",
                     variants: variants,
                     ratings: ratings,
@@ -340,6 +346,7 @@ class Leaderboards extends React.Component {
                     mostPlayedVariant={this.state.mostPlayedVariant}
                     highestRatedVariant={this.state.highestRatedVariant}
                     highestRatedPlayer={this.state.highestRatedPlayer}
+                    excluded={this.state.excluded}
                     //champions={this.state.championsPerVariant}
                 />
 
