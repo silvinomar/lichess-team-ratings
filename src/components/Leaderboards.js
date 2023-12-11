@@ -118,8 +118,8 @@ class Leaderboards extends React.Component {
 
 
                 let std_modes_cntr = 0;
-                for (let player in playersData.players) {
-                    for (let i in playersData.players[player].perfs) {
+                for (let player in filteredPlayers) {
+                    for (let i in filteredPlayers[player].perfs) {
                         if (!variants.includes(i) && i !== "streak" && i !== "storm" && i !== "racer") {
                             variants.push(i);
                             if (i === 'ultraBullet' || i === 'bullet' || i === 'blitz' ||
@@ -138,12 +138,13 @@ class Leaderboards extends React.Component {
                     //console.log(variants[i]);
                     gamesPlayed[variants[i]] = 0;
                 }
-                for (let player in playersData.players) {
-                    for (let i in playersData.players[player].perfs) {
+
+                for (let player in filteredPlayers) {
+                    for (let i in filteredPlayers[player].perfs) {
                         if (i !== "streak" && i !== "storm" && i !== "racer") {
-                            if (!('games' in playersData.players[player]['perfs'][i]))
+                            if (!('games' in filteredPlayers[player]['perfs'][i]))
                                 continue
-                            gamesPlayed[i] += playersData.players[player]['perfs'][i]['games'];
+                            gamesPlayed[i] += filteredPlayers[player]['perfs'][i]['games'];
                         }
                     }
                 }
@@ -155,7 +156,7 @@ class Leaderboards extends React.Component {
 
                 let all_modes_cntr = variants.length - 3;
                 let weird_modes_cntr = all_modes_cntr - std_modes_cntr;
-                for (let player in playersData.players) {
+                for (let player in filteredPlayers) {
                     let standard_avg = 0;
                     let weird_avg = 0;
                     let all_avg = 0;
@@ -164,30 +165,30 @@ class Leaderboards extends React.Component {
                     let all_games_cnt = 0;
 
 
-                    for (let i in playersData.players[player].perfs) {
+                    for (let i in filteredPlayers[player].perfs) {
 
-                        if (!('games' in playersData.players[player]['perfs'][i]))
+                        if (!('games' in filteredPlayers[player]['perfs'][i]))
                             continue
                         if (i === 'ultraBullet' || i === 'bullet' || i === 'blitz' || i === 'rapid' || i === 'classical' || i === 'correspondence' || i === 'puzzle') {
-                            standard_games_cnt += playersData.players[player]['perfs'][i]['games'];
-                            standard_avg += playersData.players[player]['perfs'][i]['rating'];
+                            standard_games_cnt += filteredPlayers[player]['perfs'][i]['games'];
+                            standard_avg += filteredPlayers[player]['perfs'][i]['rating'];
                         }
                         else {
-                            weird_games_cnt += playersData.players[player]['perfs'][i]['games'];
-                            weird_avg += playersData.players[player]['perfs'][i]['rating'];
+                            weird_games_cnt += filteredPlayers[player]['perfs'][i]['games'];
+                            weird_avg += filteredPlayers[player]['perfs'][i]['rating'];
                         }
-                        all_games_cnt += playersData.players[player]['perfs'][i]['games'];
-                        all_avg += playersData.players[player]['perfs'][i]['rating'];
+                        all_games_cnt += filteredPlayers[player]['perfs'][i]['games'];
+                        all_avg += filteredPlayers[player]['perfs'][i]['rating'];
 
                         if (!(i in ratings)) ratings[i] = [];
-                        ratings[i].push([playersData.players[player].username, playersData.players[player]['perfs'][i]['rating'], playersData.players[player]['perfs'][i]['games'], playersData.players[player]['perfs'][i]['prov'], playersData.players[player]['title'], playersData.players[player]['flair']]);
+                        ratings[i].push([filteredPlayers[player].username, filteredPlayers[player]['perfs'][i]['rating'], filteredPlayers[player]['perfs'][i]['games'], filteredPlayers[player]['perfs'][i]['prov'], filteredPlayers[player]['title'], filteredPlayers[player]['flair']]);
                     }
                     weird_avg /= weird_modes_cntr;
                     standard_avg /= std_modes_cntr;
                     all_avg /= all_modes_cntr;
-                    ratings['Super Champions'].push([playersData.players[player].username, Math.round(all_avg), all_games_cnt]);
-                    ratings['Standards Champions'].push([playersData.players[player].username, Math.round(standard_avg), standard_games_cnt]);
-                    ratings['Variants Champions'].push([playersData.players[player].username, Math.round(weird_avg), weird_games_cnt]);
+                    ratings['Super Champions'].push([filteredPlayers[player].username, Math.round(all_avg), all_games_cnt]);
+                    ratings['Standards Champions'].push([filteredPlayers[player].username, Math.round(standard_avg), standard_games_cnt]);
+                    ratings['Variants Champions'].push([filteredPlayers[player].username, Math.round(weird_avg), weird_games_cnt]);
                 }
 
                 //Ordenar cada variante por rating (descendente)
