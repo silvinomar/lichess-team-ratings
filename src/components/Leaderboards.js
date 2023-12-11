@@ -24,7 +24,7 @@ class Leaderboards extends React.Component {
             ratings: {},
             variantName: "",
             teamMembers: "N/D",
-            excluded:0,
+            excluded: 0,
             avgRating: "N/D",
             superChampion: ["N/D", "N/D"],
             standardChampion: ["N/D", "N/D"],
@@ -53,7 +53,7 @@ class Leaderboards extends React.Component {
 
     handleChangeTeamName = () => {
         let team = document.getElementById("teamName").value;
-        if(team !== "") {
+        if (team !== "") {
             this.setState({ team: team });
             this.handleFetch(team);
         }
@@ -101,6 +101,11 @@ class Leaderboards extends React.Component {
                     return;
                 }
 
+                // Filter out players with tosViolation
+                const filteredPlayers = playersData.players.filter(player => !player.tosViolation);
+                const excludedCount = playersData.players.length - filteredPlayers.length;
+                this.setState({ excluded: excludedCount, teamMembers: filteredPlayers.length });
+
                 let variants = [];
                 variants.push('Super Champions')
                 variants.push('Standards Champions')
@@ -111,15 +116,9 @@ class Leaderboards extends React.Component {
                 ratings['Standards Champions'] = [];
                 ratings['Variants Champions'] = [];
 
-             
+
                 let std_modes_cntr = 0;
                 for (let player in playersData.players) {
-                    // remove banned players from the list of players
-                    if (playersData.players[player].tosViolation){
-                        //console.log(playersData.players[player].username + " has been banned for TOS violation");
-                        playersData.players.splice(player, 1);
-                        this.setState({excluded:this.state.excluded+1});
-                    }
                     for (let i in playersData.players[player].perfs) {
                         if (!variants.includes(i) && i !== "streak" && i !== "storm" && i !== "racer") {
                             variants.push(i);
@@ -132,7 +131,7 @@ class Leaderboards extends React.Component {
                     }
                 }
 
-            
+
                 //Calculate the number of games played for each variant and sort the variants by the number of games played
                 let gamesPlayed = {};
                 for (let i in variants) {
@@ -179,7 +178,7 @@ class Leaderboards extends React.Component {
                         }
                         all_games_cnt += playersData.players[player]['perfs'][i]['games'];
                         all_avg += playersData.players[player]['perfs'][i]['rating'];
-                        
+
                         if (!(i in ratings)) ratings[i] = [];
                         ratings[i].push([playersData.players[player].username, playersData.players[player]['perfs'][i]['rating'], playersData.players[player]['perfs'][i]['games'], playersData.players[player]['perfs'][i]['prov'], playersData.players[player]['title'], playersData.players[player]['flair']]);
                     }
@@ -195,17 +194,16 @@ class Leaderboards extends React.Component {
                 for (let i in ratings) {
                     ratings[i] = ratings[i].sort((a, b) => b[1] - a[1]);
                     //For the this.state.championsPerVariant object, create a property for each variant and the first player in the ratings[i] as the value, as long as the player has more than 20 games played and players with the provisional rating equal to ProvisionalDefault(), otherwise, set the value to the first player to meet the requirements
-                        for (let j in ratings[i]) {
-                            if (ratings[i][j][2] > 20) {   
-                                this.state.championsPerVariant[i] = [ratings[i][j][0], ratings[i][j][1]];
+                    for (let j in ratings[i]) {
+                        if (ratings[i][j][2] > 20) {
+                            this.state.championsPerVariant[i] = [ratings[i][j][0], ratings[i][j][1]];
 
-                                // console.log(i + " champion: " + this.state.championsPerVariant[i])
-                                break;
-                            }
+                            // console.log(i + " champion: " + this.state.championsPerVariant[i])
+                            break;
                         }
-                    
+                    }
+
                 }
-            
 
                 //Calculate the most played variant, excluding Super Champions, Standard Champions and Variant Champions
                 let mostPlayed = "";
@@ -300,7 +298,6 @@ class Leaderboards extends React.Component {
 
                 const fetched = {
                     lastUpdate: new Date().toString(),
-                    teamMembers: playersData.players.length,
                     variantName: "",
                     variants: variants,
                     ratings: ratings,
@@ -315,7 +312,7 @@ class Leaderboards extends React.Component {
                     loadingState: ""
                 }
 
-                
+
                 //remove a class from a specific element by id  
                 document.getElementById("filtersTab").classList.remove("hidden");
 
@@ -348,7 +345,7 @@ class Leaderboards extends React.Component {
                     highestRatedVariant={this.state.highestRatedVariant}
                     highestRatedPlayer={this.state.highestRatedPlayer}
                     excluded={this.state.excluded}
-                    //champions={this.state.championsPerVariant}
+                //champions={this.state.championsPerVariant}
                 />
 
                 <div className='row'>
