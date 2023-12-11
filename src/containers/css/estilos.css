@@ -525,6 +525,12 @@ header .i-info {
     font-weight: 700;
 }
 
+.flair img{
+    width:20px;
+    margin-left:0.5ch;
+    vertical-align: text-top;
+}
+
 @media screen and (max-width: 460px){
     #customize span{
         display: none

@@ -9,7 +9,7 @@ const StatsTable = (props) => {
     const filteredData = filterData(props.data, minNumerOfGames);
 
     let tableVisibilityClass = (filteredData.length < 1) ? "hide" : "";
-    let specialTableClass = (statName == "Super Champions" || statName == "Standards Champions" || statName == "Variants Champions") ? "specialHeader" : "";
+    let specialTableClass = (statName === "Super Champions" || statName === "Standards Champions" || statName === "Variants Champions") ? "specialHeader" : "";
 
 
     let numberOfPlayers = filteredData.length;
@@ -52,12 +52,21 @@ const StatsTable = (props) => {
 
 
     function composeTableData(players, max) {
-        let li = players.slice(0, max).map((player) => 
-            <a href={"https://lichess.org/@/" + player[0]} target="_blank" key={"li-"+player[0]}>
-                <li><span className="player-title">{player[4]} </span>{player[0]} <span className='rating'>{player[1]}
-                    <span className='provisional'>
-                        {player[3] ? '?' : ''}
-                    </span></span>
+        let li = players.slice(0, max).map((player) =>
+            <a href={"https://lichess.org/@/" + player[0]} target="_blank" rel="noreferrer" key={"li-" + player[0]}>
+                <li>
+                    <span className="player-title">{player[4]} </span>
+                    {player[0]}
+                    {player[5] && player[5] !== 'none' ? (
+                        <span className='flair'>
+                            <img src={`https://lichess1.org/assets/______2/flair/img/${player[5]}.webp`} alt={`Flair for ${player[0]}`} />
+                        </span>
+                    ) : ''}
+                    <span className='rating'>{player[1]}
+                        <span className='provisional'>
+                            {player[3] ? '?' : ''}
+                        </span>
+                    </span>
                 </li>
             </a>);
         if (max < numberOfPlayers && !specialTableClass) {
@@ -71,40 +80,40 @@ const StatsTable = (props) => {
                 </li>
             )
         }
-    return li;
-}
+        return li;
+    }
 
 
-return (
-    <article id="leaderboards" className={"col-sm-6 col-md-4 col-xl-3 text-dark variant-container px-0 " + tableVisibilityClass + " " + specialTableClass}>
+    return (
+        <article id="leaderboards" className={"col-sm-6 col-md-4 col-xl-3 text-dark variant-container px-0 " + tableVisibilityClass + " " + specialTableClass}>
 
-        <h3 className="lead bg-dark text-white p-2 mb-0">
-            <span className={"mr-2 li-icon i-" + statName}></span>
-            <span>{statName}</span>
-        </h3>
-
-
-        <div className='stats'>
-            <p className='generalStat'>
-                Total games <span className='badge bg-secondary text-white'>{numberOfGames}</span>
-            </p>
-
-            <p className='generalStat'>
-                Average rating <span className='badge bg-secondary text-white'>{avgRating}</span>
-            </p>
-        </div>
-        <ol className="px-0 mb-0">
-            {tableData}
-        </ol>
+            <h3 className="lead bg-dark text-white p-2 mb-0">
+                <span className={"mr-2 li-icon i-" + statName}></span>
+                <span>{statName}</span>
+            </h3>
 
 
-        <FullRankingModal key={statName} variant={statName} data={fullTableData} />
+            <div className='stats'>
+                <p className='generalStat'>
+                    Total games <span className='badge bg-secondary text-white'>{numberOfGames}</span>
+                </p>
+
+                <p className='generalStat'>
+                    Average rating <span className='badge bg-secondary text-white'>{avgRating}</span>
+                </p>
+            </div>
+            <ol className="px-0 mb-0">
+                {tableData}
+            </ol>
+
+
+            <FullRankingModal key={statName} variant={statName} data={fullTableData} />
 
 
 
 
-    </article>
-)
+        </article>
+    )
 }
 
 export default StatsTable
