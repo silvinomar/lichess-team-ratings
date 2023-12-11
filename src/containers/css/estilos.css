@@ -526,9 +526,9 @@ header .i-info {
 }
 
 .flair img{
-    width:20px;
+    width:1.4rem;
     margin-left:0.5ch;
-    vertical-align: text-top;
+    vertical-align: top;
 }
 
 @media screen and (max-width: 460px){
