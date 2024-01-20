@@ -27,7 +27,7 @@ const Filters = (props) => {
                     </div>
 
                     <button id="customize" className="btn btn-outline-secondary" onClick={props.toggleFilters}>
-                        <span>Customize</span> <img alt="An icon consisting of three horizontal lines stacked on top of each other. The icon serves as a visual cue to the user that they can interact with the button to access additional options." className="icon" src={filterIcon}></img>
+                        <span>Filter</span> <img alt="An icon consisting of three horizontal lines stacked on top of each other. The icon serves as a visual cue to the user that they can interact with the button to access additional options." className="icon" src={filterIcon}></img>
                     </button>
                 </div>
 
