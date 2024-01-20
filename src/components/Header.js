@@ -24,7 +24,7 @@ const Header = (props) => {
                     <h2>
                         <span className='mr-2 li-icon i-team'></span>
                         Players
-                        <Tippy content={props.excluded + " players excluded for violating the Lichess Terms of Service."}>
+                        <Tippy content={props.excluded + " players not included for violating the Lichess Terms of Service."}>
                             <button className="li-icon i-info"></button>
                         </Tippy>
                     </h2>
@@ -46,7 +46,7 @@ const Header = (props) => {
 
                 <div className='col-sm-6 col-md-4 '>
                     <h2>Highest rated variant/time-control
-                        <Tippy content={"only variants and time controls with a minimum of 100 games played were considered"}>
+                        <Tippy content={"only variants and time controls with a minimum of 10 players were considered"}>
                             <button className="li-icon i-info"></button>
                         </Tippy>
                     </h2>

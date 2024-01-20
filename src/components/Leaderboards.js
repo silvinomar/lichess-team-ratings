@@ -6,7 +6,7 @@ import Loading from './Loading.js'
 import Filters from './Filters.js'
 
 import { DefaultMinimumOfGames } from '../utils/defaults.js'
-import { MinimumOfGamesToCalculateAverage } from '../utils/defaults.js'
+import { MinimumOfPlayersToCalculateAverage } from '../utils/defaults.js'
 import { ProvisionalDefault } from '../utils/defaults.js'
 import { DefaultTeamID } from '../utils/defaults.js'
 
@@ -239,46 +239,52 @@ class Leaderboards extends React.Component {
                 let clampedGamesByVariant = {};
                 for (let i in variants) {
                     if (variants[i] === 'Super Champions' || variants[i] === 'Standards Champions' || variants[i] === 'Variants Champions') continue;
-                    if (totalGamesByVariant[variants[i]] > MinimumOfGamesToCalculateAverage()) {
+                    if (totalGamesByVariant[variants[i]] > MinimumOfPlayersToCalculateAverage()) {
                         clampedGamesByVariant[variants[i]] = totalGamesByVariant[variants[i]];
                     }
                 }
-
-
 
                 let tempAvgRating = {};
                 for (let i in variants) {
                     tempAvgRating[variants[i]] = 0;
                     let players = 0;
                     for (let j in ratings[variants[i]]) {
-                        if (ratings[variants[i]][j][2] > 20) {
+                        // Check if the player meets the criteria (e.g., minimum games played)
+                        if (ratings[variants[i]][j][2] > DefaultMinimumOfGames()) {
                             tempAvgRating[variants[i]] += ratings[variants[i]][j][1];
                             players++;
                         }
                     }
-                    //divide averageRatingByVariant by the number of players and fix the decimal places to 0
-                    tempAvgRating[variants[i]] = (tempAvgRating[variants[i]] / players).toFixed(0);
+                    // Check if the variant has at least minimumPlayersToCalculateAverage players
+                    if (players >= MinimumOfPlayersToCalculateAverage()) {
+                        // Divide averageRatingByVariant by the number of players and fix the decimal places to 0
+                        tempAvgRating[variants[i]] = (tempAvgRating[variants[i]] / players).toFixed(0);
+                    } else {
+                        // If the variant doesn't have enough players, set the average to "N/D" (or another suitable value)
+                        tempAvgRating[variants[i]] = "N/D";
+                    }
                 }
-                // Sort the averageRatingByVariant object by rating (descendent)
+
+                // Sort the averageRatingByVariant object by rating (descendant)
                 const averageRatingByVariant = Object.fromEntries(
                     Object.entries(tempAvgRating).sort(([, a], [, b]) => b - a)
                 );
 
-                // Clone the averageRatingByVariant object in order to remove from the cloned object, the variants which have less than 100 games played
+                // Clone the averageRatingByVariant object to remove variants with less than minimumPlayersToCalculateAverage games
                 let clampedAverageRatingByVariant = {};
                 for (let i in variants) {
                     if (variants[i] === 'Super Champions' || variants[i] === 'Standards Champions' || variants[i] === 'Variants Champions') continue;
-                    if (totalGamesByVariant[variants[i]] > MinimumOfGamesToCalculateAverage()) {
+                    if (totalGamesByVariant[variants[i]] > MinimumOfPlayersToCalculateAverage()) {
                         clampedAverageRatingByVariant[variants[i]] = averageRatingByVariant[variants[i]];
                     }
                 }
-                // Sort the averageRatingByVariant object by rating (descendent)
+
+                // Sort the averageRatingByVariant object by rating (descendant)
                 const averageRatingByMostPlayedVariants = Object.fromEntries(
                     Object.entries(clampedAverageRatingByVariant).sort(([, a], [, b]) => b - a)
                 );
 
                 const [[highestRatedVariant, highestRatedVariantRating]] = Object.entries(averageRatingByMostPlayedVariants);
-
 
 
                 //Calculate highest rated player across all variants
@@ -288,10 +294,15 @@ class Leaderboards extends React.Component {
                 for (let i in ratings) {
                     if (i === 'Super Champions' || i === 'Standards Champions' || i === 'Variants Champions') continue;
                     for (let j in ratings[i]) {
-                        if (ratings[i][j][1] > highestRatedPlayerRating) {
-                            highestRatedPlayer = ratings[i][j][0];
-                            highestRatedPlayerRating = ratings[i][j][1];
-                            highestRatedPlayerVariant = i;
+                        const [player, rating, games, prov] = ratings[i][j];
+
+                        // Check if the player meets your criteria (e.g., minimum games played and not provisional)
+                        if (games > DefaultMinimumOfGames() && prov !== ProvisionalDefault()) {
+                            if (rating > highestRatedPlayerRating) {
+                                highestRatedPlayer = player;
+                                highestRatedPlayerRating = rating;
+                                highestRatedPlayerVariant = i;
+                            }
                         }
                     }
                 }
