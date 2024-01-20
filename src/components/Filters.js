@@ -37,7 +37,7 @@ const Filters = (props) => {
                         <b>Number of games</b>
                         <span>Minimum of </span>
                         <input type="number" name="minGames" id="minGames" placeholder={DefaultMinimumOfGames()} min="0" maxLength="5" onChange={props.changeMinGames}></input>
-                        <span> rated games to apper in a leaderboard</span>
+                        <span> rated games needed to appear in a leaderboard</span>
                     </p>
                     {/*  
                         <p className='my-1 filter provisionalInput'>
