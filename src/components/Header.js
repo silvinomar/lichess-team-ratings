@@ -15,7 +15,7 @@ const Header = (props) => {
 
             <div className='my-3 team-header'>
                 <h2>Team:</h2>
-                <a href={'https://lichess.org/team/' + props.teamName} target='_blank'>{props.teamName}</a>
+                <a href={'https://lichess.org/team/' + props.teamName} target='_blank' rel='noopener noreferrer'>{props.teamName}</a>
             </div>
 
             <div className="overviewStats row justify-content-around">
@@ -73,7 +73,7 @@ const Header = (props) => {
                     </h2>
                     <Loading />
                     <span>
-                        <a href={"https://lichess.org/@/" + props.superChampion[0]} target='_blank'>
+                        <a href={"https://lichess.org/@/" + props.superChampion[0]} target='_blank' rel='noopener noreferrer'>
                             {props.superChampion[0]}
                             <span className="badge bg-success text-white mx-2">
                                 {props.superChampion[1]}
@@ -92,7 +92,7 @@ const Header = (props) => {
                     </h2>
                     <Loading />
                     <span>
-                        <a href={"https://lichess.org/@/" + props.standardChampion[0]} target='_blank'>
+                        <a href={"https://lichess.org/@/" + props.standardChampion[0]} target='_blank' rel='noopener noreferrer'>
                             {props.standardChampion[0]}
                             <span className="badge bg-success text-white mx-2">
                                 {props.standardChampion[1]}
@@ -112,7 +112,7 @@ const Header = (props) => {
                     </h2>
                     <Loading />
                     <span>
-                        <a href={"https://lichess.org/@/" + props.variantChampion[0]} target='_blank'>
+                        <a href={"https://lichess.org/@/" + props.variantChampion[0]} target='_blank' rel='noopener noreferrer'>
                             {props.variantChampion[0]}
                             <span className="badge bg-success text-white mx-2">
                                 {props.variantChampion[1]}
@@ -128,12 +128,12 @@ const Header = (props) => {
                     </h2>
                     <Loading />
                     <span>
-                        <a href={"https://lichess.org/@/" + props.highestRatedPlayer[0]} target='_blank'>
+                        <a href={"https://lichess.org/@/" + props.highestRatedPlayer[0]} target='_blank' rel='noopener noreferrer'>
                             {props.highestRatedPlayer[0]}
                         </a>
 
                         <span className="d-block w-50 mx-auto badge bg-success text-white">
-                            {props.highestRatedPlayer[1]} <span className={"li-icon i-"+props.highestRatedPlayer[2]}></span>
+                            {props.highestRatedPlayer[1]} <span className={"li-icon i-" + props.highestRatedPlayer[2]}></span>
                         </span>
 
                     </span>
