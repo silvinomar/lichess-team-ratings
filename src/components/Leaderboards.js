@@ -120,7 +120,7 @@ class Leaderboards extends React.Component {
                 let std_modes_cntr = 0;
                 for (let player in filteredPlayers) {
                     for (let i in filteredPlayers[player].perfs) {
-                        if (!variants.includes(i) && i !== "streak" && i !== "storm" && i !== "racer") {
+                        if (!variants.includes(i) && i !== "streak" && i !== "storm" && i !== "racer" && i !== "standard") {
                             variants.push(i);
                             if (i === 'ultraBullet' || i === 'bullet' || i === 'blitz' ||
                                 i === 'rapid' || i === 'classical' ||
@@ -141,7 +141,7 @@ class Leaderboards extends React.Component {
 
                 for (let player in filteredPlayers) {
                     for (let i in filteredPlayers[player].perfs) {
-                        if (i !== "streak" && i !== "storm" && i !== "racer") {
+                        if (i !== "streak" && i !== "storm" && i !== "racer" && i !== "standard") {
                             if (!('games' in filteredPlayers[player]['perfs'][i]))
                                 continue
                             gamesPlayed[i] += filteredPlayers[player]['perfs'][i]['games'];
@@ -210,7 +210,7 @@ class Leaderboards extends React.Component {
                 let mostPlayed = "";
                 let mostPlayedGames = 0;
                 for (let i in ratings) {
-                    if (i === 'Super Champions' || i === 'Standards Champions' || i === 'Variants Champions') continue;
+                    if (i === 'Super Champions' || i === 'Standards Champions' || i === 'Variants Champions' || i === 'standard') continue;
                     let games = 0;
                     for (let j in ratings[i]) {
                         games += ratings[i][j][2];
@@ -307,6 +307,7 @@ class Leaderboards extends React.Component {
                     }
                 }
 
+                console.log(variants);
 
                 const fetched = {
                     lastUpdate: new Date().toString(),
