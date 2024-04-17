@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from './Header.js';
 import Tabela from './Tabela.js';
+import TabelaEspecial from './TabelaEspecial.js';
 import Footer from './Footer.js'
 import Loading from './Loading.js'
 import Filters from './Filters.js'
@@ -9,6 +10,8 @@ import { DefaultMinimumOfGames } from '../utils/defaults.js'
 import { MinimumOfPlayersToCalculateAverage } from '../utils/defaults.js'
 import { ProvisionalDefault } from '../utils/defaults.js'
 import { DefaultTeamID } from '../utils/defaults.js'
+
+
 
 
 
@@ -21,6 +24,7 @@ class Leaderboards extends React.Component {
             showProvisionalRatings: ProvisionalDefault(),
             lastUpdate: "",
             variants: [],
+            specialVariants: [],
             ratings: {},
             variantName: "",
             teamMembers: "N/D",
@@ -116,7 +120,6 @@ class Leaderboards extends React.Component {
                 ratings['Standards Champions'] = [];
                 ratings['Variants Champions'] = [];
 
-
                 let std_modes_cntr = 0;
                 for (let player in filteredPlayers) {
                     for (let i in filteredPlayers[player].perfs) {
@@ -130,7 +133,6 @@ class Leaderboards extends React.Component {
                         }
                     }
                 }
-
 
                 //Calculate the number of games played for each variant and sort the variants by the number of games played
                 let gamesPlayed = {};
@@ -186,9 +188,9 @@ class Leaderboards extends React.Component {
                     weird_avg /= weird_modes_cntr;
                     standard_avg /= std_modes_cntr;
                     all_avg /= all_modes_cntr;
-                    ratings['Super Champions'].push([filteredPlayers[player].username, Math.round(all_avg), all_games_cnt]);
-                    ratings['Standards Champions'].push([filteredPlayers[player].username, Math.round(standard_avg), standard_games_cnt]);
-                    ratings['Variants Champions'].push([filteredPlayers[player].username, Math.round(weird_avg), weird_games_cnt]);
+                    ratings['Super Champions'].push([filteredPlayers[player].username, Math.round(all_avg), filteredPlayers[player]['perfs']['games'], filteredPlayers[player]['perfs']['prov'], filteredPlayers[player]['title'], filteredPlayers[player]['flair']]);
+                    ratings['Standards Champions'].push([filteredPlayers[player].username, Math.round(standard_avg), filteredPlayers[player]['perfs']['games'], filteredPlayers[player]['perfs']['prov'], filteredPlayers[player]['title'], filteredPlayers[player]['flair']]);
+                    ratings['Variants Champions'].push([filteredPlayers[player].username, Math.round(weird_avg), filteredPlayers[player]['perfs']['games'], filteredPlayers[player]['perfs']['prov'], filteredPlayers[player]['title'], filteredPlayers[player]['flair']]);
                 }
 
                 //Ordenar cada variante por rating (descendente)
@@ -307,13 +309,12 @@ class Leaderboards extends React.Component {
                     }
                 }
 
-                console.log(variants);
-
                 const fetched = {
                     lastUpdate: new Date().toString(),
                     variantName: "",
                     variants: variants,
                     ratings: ratings,
+                    specialVariants: ['Super Champions', 'Standards Champions', 'Variants Champions'],
                     superChampion: [ratings['Super Champions'][0][0], ratings['Super Champions'][0][1]],
                     standardChampion: [ratings['Standards Champions'][0][0], ratings['Standards Champions'][0][1]],
                     variantChampion: [ratings['Variants Champions'][0][0], ratings['Variants Champions'][0][1]],
@@ -325,7 +326,7 @@ class Leaderboards extends React.Component {
                     loadingState: ""
                 }
 
-
+           
                 //remove a class from a specific element by id  
                 document.getElementById("filtersTab").classList.remove("hidden");
 
@@ -347,7 +348,6 @@ class Leaderboards extends React.Component {
     render() {
         return (
 
-
             <section className='leaderboard-container container' >
 
                 <Header teamName={this.state.team} teamMembersN={this.state.teamMembers}
@@ -361,16 +361,25 @@ class Leaderboards extends React.Component {
                 //champions={this.state.championsPerVariant}
                 />
 
-                <div className='row'>
+                <div>
+                    <div id="leaderboards" className='row'>
+                        {this.state.variants.map(vname => (
+                            <Tabela key={vname} name={vname}
+                                data={this.state.ratings[vname]}
+                                averageRating={this.state.averageRatings[vname]}
+                                totalGames={this.state.totalGames[vname]}
+                                minGames={this.state.minGames}
+                                prov={this.state.showProvisionalRatings} />
+                        ))}
+                    </div>
 
-                    <Loading />
-
-                    {this.state.variants.map(vname => (
-                        <Tabela key={vname} name={vname} data={this.state.ratings[vname]} averageRating={this.state.averageRatings[vname]} totalGames={this.state.totalGames[vname]} minGames={this.state.minGames} prov={this.state.showProvisionalRatings} />
-                    ))}
-
-
-
+                    <div id="specialLeaderboards" className='row'>
+                        {this.state.specialVariants.map(vname => (
+                            <TabelaEspecial key={"special" + vname} name={vname} data={this.state.ratings[vname]}
+                                minGames={this.state.minGames}
+                                prov={this.state.showProvisionalRatings} />
+                        ))}
+                    </div>
                 </div >
 
                 <Filters
@@ -381,7 +390,6 @@ class Leaderboards extends React.Component {
                     changeMinGames={this.handleChangeMinGames}
                     changeProvisional={this.handleToggleProvisional}
                 />
-
 
                 <Footer date={this.state.lastUpdate} />
 

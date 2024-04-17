@@ -85,7 +85,7 @@ const StatsTable = (props) => {
 
 
     return (
-        <article id="leaderboards" className={"col-sm-6 col-md-4 col-xl-3 text-dark variant-container px-0 " + tableVisibilityClass + " " + specialTableClass}>
+        <article className={"col-sm-6 col-md-4 col-xl-3 text-dark variant-container px-0 " + tableVisibilityClass + " " + specialTableClass}>
 
             <h3 className="lead bg-dark text-white p-2 mb-0">
                 <span className={"mr-2 li-icon i-" + statName}></span>

@@ -299,7 +299,7 @@ header .loading {
     cursor: pointer;
 }
 
-.specialHeader h3 {
+#specialLeaderboards h3 {
     background: var(--light-blue) !important;
     color: white !important;
     font-weight: 400;
