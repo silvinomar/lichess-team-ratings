@@ -1,4 +1,4 @@
-const minimumOfGames = 20;
+const minimumOfGames = 10;
 const provisionalDefault = true;
 const defaultTeamID = "grupo-xadrez-musas";
 const minimumOfPlayersToCalculateAverage = 10;
