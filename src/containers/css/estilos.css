@@ -536,3 +536,22 @@ header .i-info {
         display: none
     }
 }
+
+
+
+.progress-bar-container {
+    width: 100%;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.progress-bar {
+    height: 24px;
+    color: #fff;
+    text-align: center;
+    line-height: 24px;
+    background-color: #007bff;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}

@@ -28,7 +28,7 @@ const Header = (props) => {
                             <button className="li-icon i-info"></button>
                         </Tippy>
                     </h2>
-                    <Loading />
+                    {props.loading && <Loading />}
                     <span>
                         {props.teamMembersN.toLocaleString('en-US')}
                     </span>
@@ -36,7 +36,7 @@ const Header = (props) => {
 
                 <div className='col-sm-6 col-md-4 '>
                     <h2>Most played variant/time-control</h2>
-                    <Loading />
+                    {props.loading && <Loading />}
                     <span>
                         {props.mostPlayedVariant[0]}
                         <i className={"ml-2 li-icon i-" + props.mostPlayedVariant[0]}></i>
@@ -52,7 +52,7 @@ const Header = (props) => {
                     </h2>
 
 
-                    <Loading />
+                    {props.loading && <Loading />}
                     <span>
                         {props.highestRatedVariant[0]}
                         <i className={"ml-2 li-icon i-" + props.highestRatedVariant[0]}></i>
@@ -71,7 +71,7 @@ const Header = (props) => {
                         </Tippy>
 
                     </h2>
-                    <Loading />
+                    {props.loading && <Loading />}
                     <span>
                         <a href={"https://lichess.org/@/" + props.superChampion[0]} target='_blank' rel='noopener noreferrer'>
                             {props.superChampion[0]}
@@ -90,7 +90,7 @@ const Header = (props) => {
                             <button className="li-icon i-info"></button>
                         </Tippy>
                     </h2>
-                    <Loading />
+                    {props.loading && <Loading />}
                     <span>
                         <a href={"https://lichess.org/@/" + props.standardChampion[0]} target='_blank' rel='noopener noreferrer'>
                             {props.standardChampion[0]}
@@ -110,7 +110,7 @@ const Header = (props) => {
 
                         </Tippy>
                     </h2>
-                    <Loading />
+                    {props.loading && <Loading />}
                     <span>
                         <a href={"https://lichess.org/@/" + props.variantChampion[0]} target='_blank' rel='noopener noreferrer'>
                             {props.variantChampion[0]}
@@ -126,7 +126,7 @@ const Header = (props) => {
                         <span className="mr-2 li-icon i-crown"></span>
                         Highest rated
                     </h2>
-                    <Loading />
+                    {props.loading && <Loading />}
                     <span>
                         <a href={"https://lichess.org/@/" + props.highestRatedPlayer[0]} target='_blank' rel='noopener noreferrer'>
                             {props.highestRatedPlayer[0]}
