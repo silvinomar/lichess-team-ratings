@@ -371,6 +371,9 @@ class Leaderboards extends React.Component {
 
             <section className='leaderboard-container container' >
 
+                {loading && <ProgressBar progress={progress} loaded={fetchedIds} total={totalIds} teamName={team}/>}
+
+
                 {validTeam && <Header teamName={this.state.team} teamMembersN={this.state.teamMembers}
                     superChampion={this.state.superChampion}
                     standardChampion={this.state.standardChampion}
@@ -382,8 +385,6 @@ class Leaderboards extends React.Component {
                     loading={this.state.loading}
                 //champions={this.state.championsPerVariant}
                 />}
-
-                {loading && <ProgressBar progress={progress} loaded={fetchedIds} total={totalIds} teamName={team}/>}
 
                 {!loading && validTeam && <div>
 
