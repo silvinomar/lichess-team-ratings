@@ -20,9 +20,10 @@ const Filters = (props) => {
                     </div>
                     */ }
                     <div className="input-group mb-1">
-                        <input type="text" id='teamName' className="form-control" placeholder="Find a new team" aria-label="Team ID" aria-describedby="search-team">
+                        <input type="text" id='teamName' className="form-control" placeholder="Find a new team" aria-label="Team ID" aria-describedby="search-team"
+                        onChange={props.updateTeamName}>
                         </input>
-                        <input type='submit' className="input-group-text" value="Search" onClick={props.changeTeamName} id="search-team">
+                        <input type='submit' className="input-group-text" value="Search" onClick={props.fetchNewTeam} id="search-team">
                         </input>
                     </div>
 
