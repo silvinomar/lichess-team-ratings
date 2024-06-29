@@ -11,10 +11,6 @@ import { MinimumOfPlayersToCalculateAverage } from '../utils/defaults.js'
 import { ProvisionalDefault } from '../utils/defaults.js'
 import { DefaultTeamID } from '../utils/defaults.js'
 
-
-
-
-
 class Leaderboards extends React.Component {
     constructor(props) {
         super(props);
@@ -45,9 +41,10 @@ class Leaderboards extends React.Component {
         };
 
         this.handleChangeMinGames = this.handleChangeMinGames.bind(this);
-        this.handleChangeTeamName = this.handleChangeTeamName.bind(this);
+        this.handleUpdateTeamName = this.handleUpdateTeamName.bind(this);
         this.handleToggleProvisional = this.handleToggleProvisional.bind(this);
         this.handleFetch = this.handleFetch.bind(this);
+        this.handleFetchNewTeam = this.handleFetchNewTeam.bind(this);
         this.toggleFiltersTab = this.toggleFiltersTab.bind(this);
     }
 
@@ -55,13 +52,15 @@ class Leaderboards extends React.Component {
 
     async handleFetch(team) {
 
-        this.setState({ progress: 0, totalIds: 0, fetchedIds: 0, teamMembers: "N/D", avgRating: "N/D", superChampion: "N/D", superChampionRating: "N/D", standardChampion: "N/D", standardChampionRating: "N/D", variantChampion: "N/D", variantChampionRating: "N/D", mostPlayedVariant: "N/D", mostPlayedVariantNumber: "N/D" });
+        this.setState({ validTeam: false, progress: 0, totalIds: 0, fetchedIds: 0, teamMembers: "N/D", avgRating: "N/D", superChampion: "N/D", superChampionRating: "N/D", standardChampion: "N/D", standardChampionRating: "N/D", variantChampion: "N/D", variantChampionRating: "N/D", mostPlayedVariant: "N/D", mostPlayedVariantNumber: "N/D" });
 
         try {
             const response = await fetch(`https://lichess.org/api/team/${team}/users`);
             //console.log("Response received", response);
             if (!response.ok) {
                 throw new Error(`Error fetching ${team} users: ${response.statusText}`);
+            } else{
+                this.setState({ validTeam: true });
             }
             const data = await response.text();
             //console.log("Data received", data);
@@ -92,7 +91,7 @@ class Leaderboards extends React.Component {
                     }));
 
                     // Add a delay in ms between requests to avoid rate limiting
-                    await this.delay(1);
+                    await this.delay(50);
                 } catch (userFetchError) {
                     console.error("Error fetching user details:", userFetchError.message);
                 }
@@ -334,13 +333,21 @@ class Leaderboards extends React.Component {
         this.handleFetch(this.state.team);
     }
 
-    handleChangeTeamName = () => {
-        let team = document.getElementById("teamName").value;
-        if (team !== "") {
-            this.setState({ team: team });
-            this.handleFetch(team);
-        }
+    handleUpdateTeamName(event) {
+        this.setState({ team: event.target.value });
     }
+
+    handleFetchNewTeam = async () => {
+        const team = this.state.team; // Get the team name from state
+
+        this.setState({ loading: true }); // Set loading state before fetching new data
+        await this.handleFetch(team); // Wait for handleFetch to complete
+
+        // After fetching is done and state is updated, set loading to false
+        this.setState({ loading: false });
+
+    }
+
 
     handleChangeMinGames = (event) => {
         this.setState({ minGames: event.target.value });
@@ -358,13 +365,13 @@ class Leaderboards extends React.Component {
 
     render() {
 
-        const { loading, progress, totalIds, fetchedIds } = this.state;
+        const { loading, progress, totalIds, fetchedIds, team, validTeam } = this.state;
 
         return (
 
             <section className='leaderboard-container container' >
 
-                <Header teamName={this.state.team} teamMembersN={this.state.teamMembers}
+                {validTeam && <Header teamName={this.state.team} teamMembersN={this.state.teamMembers}
                     superChampion={this.state.superChampion}
                     standardChampion={this.state.standardChampion}
                     variantChampion={this.state.variantChampion}
@@ -374,10 +381,11 @@ class Leaderboards extends React.Component {
                     excluded={this.state.excluded}
                     loading={this.state.loading}
                 //champions={this.state.championsPerVariant}
-                />
+                />}
 
-                <div>
-                    {loading && <ProgressBar progress={progress} loaded={fetchedIds} total={totalIds} />}
+                {loading && <ProgressBar progress={progress} loaded={fetchedIds} total={totalIds} teamName={team}/>}
+
+                {!loading && validTeam && <div>
 
                     <div id="leaderboards" className='row'>
                         {this.state.variants.map(vname => (
@@ -397,18 +405,24 @@ class Leaderboards extends React.Component {
                                 prov={this.state.showProvisionalRatings} />
                         ))}
                     </div>
-                </div >
+                </div >}
+
+                {!validTeam && !loading && 
+                <div className="alert alert-danger my-5" role="alert">    
+                Team not found. Please check the team ID and try again. 
+                </div>}
 
                 {!loading && <Filters
                     fixedStatus={this.state.fixedFilters}
                     collapseStatus={this.state.collapseFilters}
                     toggleFilters={this.toggleFiltersTab}
-                    changeTeamName={this.handleChangeTeamName}
+                    updateTeamName={this.handleUpdateTeamName}
+                    fetchNewTeam={this.handleFetchNewTeam}
                     changeMinGames={this.handleChangeMinGames}
                     changeProvisional={this.handleToggleProvisional}
                 />}
 
-                {!loading && <Footer date={this.state.lastUpdate} />}
+                {!loading && validTeam && <Footer date={this.state.lastUpdate} />}
 
             </section>)
     } //return
@@ -416,7 +430,3 @@ class Leaderboards extends React.Component {
 } //class
 
 export default Leaderboards
-
-
-
-
