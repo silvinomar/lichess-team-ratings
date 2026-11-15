@@ -1,22 +1,29 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class ProgressBar extends Component {
-    render() {
-        const { progress, loaded, total, teamName } = this.props;
+function ProgressBar({ progress, loaded, total, teamName }) {
+    const value = Number.isFinite(progress) ? Math.min(100, Math.max(0, progress)) : 0;
 
-        return (
-            <div className="px-4 py-3 progress-bar-container mb-5">
-                <p className="lead">Loading <b>{teamName}</b> stats.</p>
-                <p className="lead">Getting details from {loaded} of {total} players...</p>
-                <div
-                    className="progress-bar"
-                    style={{ width: `${progress}%` }}
-                >
-
-                </div>
+    return (
+        <section className="loading-panel" aria-label="Loading team data">
+            <div className="loading-copy">
+                <p className="loading-title">Loading {teamName} stats</p>
+                <p className="loading-count">
+                    {Number(loaded).toLocaleString()} of {Number(total).toLocaleString()} player details
+                </p>
             </div>
-        );
-    }
+            <div
+                className="loading-track"
+                role="progressbar"
+                aria-label="Player details fetched"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={value}
+                aria-valuetext={`${value}% complete`}
+            >
+                <span className="loading-fill" style={{ width: `${value}%` }} />
+            </div>
+        </section>
+    );
 }
 
 export default ProgressBar;
