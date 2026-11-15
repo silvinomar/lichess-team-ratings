@@ -11,6 +11,11 @@ import { MinimumOfPlayersToCalculateAverage } from '../utils/defaults.js'
 import { ProvisionalDefault } from '../utils/defaults.js'
 import { DefaultTeamID } from '../utils/defaults.js'
 
+// Máximo de IDs aceites por pedido pelo endpoint POST /api/users do Lichess
+const BATCH_SIZE = 300;
+// Pausa entre lotes (ms) para respeitar o rate limit
+const BATCH_DELAY = 500;
+
 class Leaderboards extends React.Component {
     constructor(props) {
         super(props);
@@ -37,7 +42,10 @@ class Leaderboards extends React.Component {
             totalGames: {},
             loading: true,
             fixedFilters: "",
-            collapseFilters: "closed"
+            collapseFilters: "closed",
+            // Feedback de progresso
+            phase: "",
+            membersFound: 0
         };
 
         this.handleChangeMinGames = this.handleChangeMinGames.bind(this);
@@ -50,70 +58,103 @@ class Leaderboards extends React.Component {
 
     delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-    async handleFetch(team) {
+    // Lê a lista de membros da equipa em streaming (NDJSON), atualizando o contador à medida que chegam
+    async fetchTeamMembers(team) {
+        const response = await fetch(`https://lichess.org/api/team/${team}/users`);
+        if (!response.ok) {
+            throw new Error(`Error fetching ${team} users: ${response.statusText}`);
+        }
+        this.setState({ validTeam: true });
 
-        this.setState({ validTeam: false, progress: 0, totalIds: 0, fetchedIds: 0, teamMembers: "N/D", avgRating: "N/D", superChampion: "N/D", superChampionRating: "N/D", standardChampion: "N/D", standardChampionRating: "N/D", variantChampion: "N/D", variantChampionRating: "N/D", mostPlayedVariant: "N/D", mostPlayedVariantNumber: "N/D" });
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = "";
+        const players = [];
 
-        try {
-            const response = await fetch(`https://lichess.org/api/team/${team}/users`);
-            //console.log("Response received", response);
-            if (!response.ok) {
-                throw new Error(`Error fetching ${team} users: ${response.statusText}`);
-            } else {
-                this.setState({ validTeam: true });
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split("\n");
+            buffer = lines.pop(); // a última linha pode estar incompleta
+            for (const line of lines) {
+                if (line.trim()) players.push(JSON.parse(line));
             }
-            const data = await response.text();
-            //console.log("Data received", data);
-            const playersData = data.split('\n');
-            //console.log("Players data split", playersData);
-            const playersJSON = JSON.parse('{"players":[' + playersData.slice(0, -1) + ']}');
-            //console.log("Players parsed from", team, ": ", playersJSON);
+            this.setState({ membersFound: players.length });
+        }
+        if (buffer.trim()) players.push(JSON.parse(buffer));
+        this.setState({ membersFound: players.length });
 
-            // Set total number of IDs (players) to fetch
-            const totalIds = playersJSON.players.length;
-            this.setState({ totalIds });
+        return players;
+    }
 
-            const ids = playersJSON.players.map(p => p.id);
-            const CHUNK_SIZE = 300;
-            const userDetails = [];
+    // Obtém os detalhes dos utilizadores em lotes de 300 (POST /api/users)
+    async fetchUserDetails(ids) {
+        const totalIds = ids.length;
+        const userDetails = [];
 
-            console.log(playersJSON.players[0]);
+        for (let i = 0; i < ids.length; i += BATCH_SIZE) {
+            const chunk = ids.slice(i, i + BATCH_SIZE);
 
-            for (let i = 0; i < ids.length; i += CHUNK_SIZE) {
-                const chunk = ids.slice(i, i + CHUNK_SIZE);
-
-                let users = null;
-                for (let attempt = 0; attempt < 3 && users === null; attempt++) {
-                    const res = await fetch('https://lichess.org/api/users', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'text/plain' },
-                        body: chunk.join(',')
-                    });
-
-                    if (res.status === 429) {
-                        // Rate limit: o Lichess pede para esperar cerca de 1 minuto
-                        await this.delay(60000);
-                        continue;
-                    }
-                    if (!res.ok) {
-                        throw new Error(`Error fetching users batch: ${res.statusText}`);
-                    }
-                    users = await res.json();
-                }
-                if (users === null) throw new Error("Rate limited by Lichess, try again later.");
-
-                userDetails.push(...users);
-
-                this.setState({
-                    fetchedIds: userDetails.length,
-                    progress: Math.round(userDetails.length / totalIds * 100)
+            let users = null;
+            for (let attempt = 0; attempt < 3 && users === null; attempt++) {
+                const res = await fetch('https://lichess.org/api/users', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: chunk.join(',')
                 });
 
-                // Só é necessário esperar quando há mais lotes (equipas com mais de 300 membros)
-                if (i + CHUNK_SIZE < ids.length) await this.delay(1000);
+                if (res.status === 429) {
+                    // Rate limit: o Lichess pede para esperar cerca de 1 minuto
+                    this.setState({ phase: "Limite de pedidos do Lichess atingido. A aguardar 60 s..." });
+                    await this.delay(60000);
+                    this.setState({ phase: "A obter ratings dos jogadores..." });
+                    continue;
+                }
+                if (!res.ok) {
+                    throw new Error(`Error fetching users batch: ${res.statusText}`);
+                }
+                users = await res.json();
             }
+            if (users === null) throw new Error("Rate limited by Lichess, try again later.");
 
-            //console.log("User details fetched", userDetails);
+            userDetails.push(...users);
+
+            this.setState({
+                fetchedIds: userDetails.length,
+                progress: Math.round(userDetails.length / totalIds * 100)
+            });
+
+            // Só espera quando ainda há mais lotes
+            if (i + BATCH_SIZE < ids.length) await this.delay(BATCH_DELAY);
+        }
+
+        return userDetails;
+    }
+
+    async handleFetch(team) {
+
+        this.setState({
+            validTeam: false, progress: 0, totalIds: 0, fetchedIds: 0, membersFound: 0,
+            phase: "A obter lista de membros...",
+            teamMembers: "N/D", avgRating: "N/D", superChampion: "N/D", superChampionRating: "N/D",
+            standardChampion: "N/D", standardChampionRating: "N/D", variantChampion: "N/D",
+            variantChampionRating: "N/D", mostPlayedVariant: "N/D", mostPlayedVariantNumber: "N/D"
+        });
+
+        try {
+            // Fase 1: lista de membros (streaming)
+            const members = await this.fetchTeamMembers(team);
+            const ids = members.map(p => p.id);
+
+            const totalIds = ids.length;
+            this.setState({ totalIds, phase: "A obter ratings dos jogadores..." });
+
+            // Fase 2: detalhes (perfs) em lotes
+            const userDetails = await this.fetchUserDetails(ids);
+
+            // Fase 3: cálculos
+            this.setState({ phase: "A calcular rankings..." });
 
             // Filter out players with tosViolation
             const filteredPlayers = userDetails.filter(user => !user.tosViolation);
@@ -146,7 +187,6 @@ class Leaderboards extends React.Component {
             //Calculate the number of games played for each variant and sort the variants by the number of games played
             let gamesPlayed = {};
             for (let i in variants) {
-                //console.log(variants[i]);
                 gamesPlayed[variants[i]] = 0;
             }
 
@@ -209,8 +249,6 @@ class Leaderboards extends React.Component {
                 for (let j in ratings[i]) {
                     if (ratings[i][j][2] > 20) {
                         this.state.championsPerVariant[i] = [ratings[i][j][0], ratings[i][j][1]];
-
-                        // console.log(i + " champion: " + this.state.championsPerVariant[i])
                         break;
                     }
                 }
@@ -334,7 +372,8 @@ class Leaderboards extends React.Component {
                 highestRatedPlayer: [highestRatedPlayer, highestRatedPlayerRating, highestRatedPlayerVariant],
                 averageRatings: averageRatingByVariant,
                 totalGames: totalGamesByVariant,
-                loading: false
+                loading: false,
+                phase: ""
             }
 
             this.setState(fetched);
@@ -360,7 +399,7 @@ class Leaderboards extends React.Component {
         await this.handleFetch(team); // Wait for handleFetch to complete
 
         // After fetching is done and state is updated, set loading to false
-        this.setState({ loading: false });
+        this.setState({ loading: false, phase: "" });
 
     }
 
@@ -381,13 +420,24 @@ class Leaderboards extends React.Component {
 
     render() {
 
-        const { loading, progress, totalIds, fetchedIds, team, validTeam } = this.state;
+        const { loading, progress, totalIds, fetchedIds, team, validTeam, phase, membersFound } = this.state;
+
+        // Texto de feedback mostrado durante o carregamento
+        let statusText = phase;
+        if (phase === "A obter lista de membros..." && membersFound > 0) {
+            statusText = `${phase} ${membersFound} membros encontrados`;
+        } else if (phase === "A obter ratings dos jogadores..." && totalIds > 0) {
+            statusText = `${phase} ${fetchedIds} de ${totalIds}`;
+        }
 
         return (
 
             <section className='leaderboard-container container' >
 
-                {loading && <ProgressBar progress={progress} loaded={fetchedIds} total={totalIds} teamName={team} />}
+                {loading && <ProgressBar progress={progress} loaded={fetchedIds} total={totalIds} teamName={team}/>}
+
+                {loading && statusText &&
+                    <p className="text-center text-muted my-3" role="status">{statusText}</p>}
 
 
                 {validTeam && <Header teamName={this.state.team} teamMembersN={this.state.teamMembers}
@@ -424,10 +474,10 @@ class Leaderboards extends React.Component {
                     </div>
                 </div >}
 
-                {!validTeam && !loading &&
-                    <div className="alert alert-danger my-5" role="alert">
-                        Team not found. Please check the team ID and try again.
-                    </div>}
+                {!validTeam && !loading && 
+                <div className="alert alert-danger my-5" role="alert">    
+                Team not found. Please check the team ID and try again. 
+                </div>}
 
                 {!loading && <Filters
                     fixedStatus={this.state.fixedFilters}
