@@ -59,7 +59,7 @@ class Leaderboards extends React.Component {
             //console.log("Response received", response);
             if (!response.ok) {
                 throw new Error(`Error fetching ${team} users: ${response.statusText}`);
-            } else{
+            } else {
                 this.setState({ validTeam: true });
             }
             const data = await response.text();
@@ -73,28 +73,44 @@ class Leaderboards extends React.Component {
             const totalIds = playersJSON.players.length;
             this.setState({ totalIds });
 
+            const ids = playersJSON.players.map(p => p.id);
+            const CHUNK_SIZE = 300;
             const userDetails = [];
-            for (const player of playersJSON.players) {
-                try {
-                    //console.log("Fetching user details for", player.id);
-                    const userResponse = await fetch(`https://lichess.org/api/user/${player.id}`);
-                    if (!userResponse.ok) {
-                        throw new Error(`Error fetching user ${player.id}: ${userResponse.statusText}`);
+
+            console.log(playersJSON.players[0]);
+
+            for (let i = 0; i < ids.length; i += CHUNK_SIZE) {
+                const chunk = ids.slice(i, i + CHUNK_SIZE);
+
+                let users = null;
+                for (let attempt = 0; attempt < 3 && users === null; attempt++) {
+                    const res = await fetch('https://lichess.org/api/users', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain' },
+                        body: chunk.join(',')
+                    });
+
+                    if (res.status === 429) {
+                        // Rate limit: o Lichess pede para esperar cerca de 1 minuto
+                        await this.delay(60000);
+                        continue;
                     }
-                    const user = await userResponse.json();
-                    userDetails.push(user);
-
-                    // Update fetched IDs count and progress
-                    this.setState(prevState => ({
-                        fetchedIds: prevState.fetchedIds + 1,
-                        progress: Math.round((prevState.fetchedIds + 1) / totalIds * 100)
-                    }));
-
-                    // Add a delay in ms between requests to avoid rate limiting
-                    await this.delay(50);
-                } catch (userFetchError) {
-                    console.error("Error fetching user details:", userFetchError.message);
+                    if (!res.ok) {
+                        throw new Error(`Error fetching users batch: ${res.statusText}`);
+                    }
+                    users = await res.json();
                 }
+                if (users === null) throw new Error("Rate limited by Lichess, try again later.");
+
+                userDetails.push(...users);
+
+                this.setState({
+                    fetchedIds: userDetails.length,
+                    progress: Math.round(userDetails.length / totalIds * 100)
+                });
+
+                // Só é necessário esperar quando há mais lotes (equipas com mais de 300 membros)
+                if (i + CHUNK_SIZE < ids.length) await this.delay(1000);
             }
 
             //console.log("User details fetched", userDetails);
@@ -371,7 +387,7 @@ class Leaderboards extends React.Component {
 
             <section className='leaderboard-container container' >
 
-                {loading && <ProgressBar progress={progress} loaded={fetchedIds} total={totalIds} teamName={team}/>}
+                {loading && <ProgressBar progress={progress} loaded={fetchedIds} total={totalIds} teamName={team} />}
 
 
                 {validTeam && <Header teamName={this.state.team} teamMembersN={this.state.teamMembers}
@@ -408,10 +424,10 @@ class Leaderboards extends React.Component {
                     </div>
                 </div >}
 
-                {!validTeam && !loading && 
-                <div className="alert alert-danger my-5" role="alert">    
-                Team not found. Please check the team ID and try again. 
-                </div>}
+                {!validTeam && !loading &&
+                    <div className="alert alert-danger my-5" role="alert">
+                        Team not found. Please check the team ID and try again.
+                    </div>}
 
                 {!loading && <Filters
                     fixedStatus={this.state.fixedFilters}
